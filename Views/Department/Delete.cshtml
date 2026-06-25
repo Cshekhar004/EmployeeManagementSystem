@@ -1,0 +1,28 @@
+@model EmployeeManagement.Models.Department
+
+<form id="deleteDepartmentForm">
+
+    <input type="hidden"
+           name="departmentId"
+           value="@Model.DepartmentId" />
+
+    <h5 class="mb-4 text-danger">
+
+        Delete this department?
+
+    </h5>
+
+    <h4 class="mb-4">
+
+        @Model.DepartmentName
+
+    </h4>
+
+    <button type="submit"
+            class="btn btn-danger">
+
+        Delete
+
+    </button>
+
+</form>

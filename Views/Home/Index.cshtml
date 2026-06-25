@@ -1,0 +1,273 @@
+﻿@model EmployeeManagement.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        Employee Management Dashboard
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Employee"
+            asp-action="Index"
+            class="text-decoration-none">
+
+                <div class="card dashboard-card text-white bg-primary shadow">
+
+                    <div class="card-body">
+
+                        <h6>Total Employees</h6>
+
+                        <h2>
+                            @Model.TotalEmployees
+                        </h2>
+
+                        <i class="bi bi-people-fill fs-1"></i>
+
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Department"
+            asp-action="Index"
+            class="text-decoration-none">
+
+                <div class="card dashboard-card text-white bg-success shadow">
+
+                    <div class="card-body">
+
+                        <h6>Total Departments</h6>
+
+                            <h2>
+                                @Model.TotalDepartments
+                            </h2>
+
+                        <i class="bi bi-building fs-1"></i>
+
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Employee"
+            asp-action="Index"
+            asp-route-genderFilter="Male"
+            class="text-decoration-none">
+
+                <div class="card dashboard-card text-white bg-info shadow">
+
+                    <div class="card-body">
+
+                        <h6>Male Employees</h6>
+
+                        <h2>
+                            @Model.MaleEmployees
+                        </h2>
+
+                        <i class="bi bi-person-fill fs-1"></i>
+
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Employee"
+            asp-action="Index"
+            asp-route-genderFilter="Female"
+            class="text-decoration-none">
+
+                <div class="card dashboard-card text-white bg-warning shadow">
+
+                    <div class="card-body">
+
+                        <h6>Female Employees</h6>
+
+                        <h2>
+                            @Model.FemaleEmployees
+                        </h2>
+
+                        <i class="bi bi-person-heart fs-1"></i>
+
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header">
+                Employees By Department
+            </div>
+
+            <div class="card-body">
+                <canvas id="departmentChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header">
+                Gender Distribution
+            </div>
+
+            <div class="card-body">
+                <canvas id="genderChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-3">
+        <div class="card border-success shadow">
+            <div class="card-body">
+                <h6>Highest Salary</h6>
+
+                <h5>
+                    @Model.HighestSalaryEmployee
+                </h5>
+
+                <strong>
+                    ₹ @Model.HighestSalary.ToString("N2")
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-danger shadow">
+            <div class="card-body">
+                <h6>Lowest Salary</h6>
+
+                <h5>
+                    @Model.LowestSalaryEmployee
+                </h5>
+
+                <strong>
+                    ₹ @Model.LowestSalary.ToString("N2")
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-primary shadow">
+            <div class="card-body">
+                <h6>Average Salary</h6>
+
+                <h4>
+                    ₹ @Model.AverageSalary.ToString("N2")
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-warning shadow">
+            <div class="card-body">
+                <h6>
+                    Employees Added This Month
+                </h6>
+
+                <h3>
+                    @Model.EmployeesAddedThisMonth
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        var departmentLabels =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    Model.DepartmentNames));
+
+        var departmentCounts =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    Model.DepartmentCounts));
+
+        new Chart(
+            document.getElementById('departmentChart'),
+            {
+                type: 'bar',
+                data:
+                {
+                    labels: departmentLabels,
+                    datasets:
+                    [{
+                        label: 'Employees',
+                        data: departmentCounts
+                    }]
+                }
+            });
+
+        var genderLabels =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    Model.GenderLabels));
+
+        var genderCounts =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    Model.GenderCounts));
+
+        new Chart(
+            document.getElementById('genderChart'),
+            {
+                type: 'pie',
+                data:
+                {
+                    labels: genderLabels,
+                    datasets:
+                    [{
+                        data: genderCounts
+                    }]
+                }
+            });
+
+    </script>
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

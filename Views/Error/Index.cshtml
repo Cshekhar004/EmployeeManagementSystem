@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-danger">
+
+        <div class="card-body text-center">
+
+            <h1 class="text-danger">
+                Oops!
+            </h1>
+
+            <h4>
+                Something went wrong.
+            </h4>
+
+            <p>
+                Please try again later.
+            </p>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-primary">
+
+                Go Home
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

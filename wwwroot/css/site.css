@@ -1,0 +1,237 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+}
+
+.sidebar .nav-link {
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+}
+
+.sidebar .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.content {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+}
+
+.shadow-sm {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.dashboard-card
+{
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.dashboard-card:hover
+{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+
+.login-page
+{
+    background: linear-gradient(
+        135deg,
+        #0d6efd,
+        #6f42c1);
+
+    min-height: 100vh;
+}
+
+.login-page .card
+{
+    border-radius: 15px;
+}
+
+.login-page .card-header
+{
+    border-radius: 15px 15px 0 0;
+}
+
+.login-footer
+{
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    opacity: 0.9;
+}
+
+/* =========================
+   SaaS Footer Base
+========================= */
+.saas-footer {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #0f172a);
+    color: #cbd5e1;
+    overflow: hidden;
+}
+
+/* Footer text */
+.footer-text {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================
+   Quick Links
+========================= */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin: 8px 0;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #cbd5e1;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* hover animation */
+.footer-links a:hover {
+    color: #ffffff;
+    padding-left: 8px;
+}
+
+/* underline animation */
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0%;
+    height: 1px;
+    background: #3b82f6;
+    transition: 0.3s;
+}
+
+.footer-links a:hover::after {
+    width: 100%;
+}
+
+/* =========================
+   Social Icons
+========================= */
+.social-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* desktop alignment */
+@media (min-width: 992px) {
+    .social-container {
+        justify-content: flex-end;
+    }
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+/* hover animation */
+.social-icon:hover {
+    transform: translateY(-6px) scale(1.1);
+    background: #3b82f6;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* =========================
+   Divider + Bottom
+========================= */
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.footer-bottom {
+    color: #94a3b8;
+}
+
+/* =========================
+   Mobile Responsiveness
+========================= */
+@media (max-width: 768px) {
+    .saas-footer {
+        text-align: center;
+    }
+
+    .footer-links a {
+        display: block;
+        text-align: center;
+    }
+
+    .social-container {
+        justify-content: center !important;
+    }
+}
+
+.table-scroll
+{
+    max-height: 500px;
+    overflow-y: auto;
+}

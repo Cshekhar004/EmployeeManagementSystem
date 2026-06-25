@@ -1,0 +1,504 @@
+@model IEnumerable<EmployeeManagement.Models.Employee>
+@using Microsoft.AspNetCore.Http
+
+@{
+    string? role =
+        Context.Session.GetString("Role");
+}
+
+@{
+    ViewData["Title"] = "Employee List";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                @(ViewData["PageTitle"] ?? "Employee List")
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                @if (role != "Manager" && role != "User")
+                {
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="openEmployeeModal('/Employee/Create')">
+                            <i class="bi bi-plus-circle"></i>
+
+                        Create Employee
+
+                    </button>
+                }
+
+                <a asp-action="ExportToExcel"
+                    class="btn btn-primary ms-2">
+                        Export Excel
+                </a>
+
+                <a asp-action="ExportToPdf"
+                    class="btn btn-danger ms-2">
+                        Export PDF
+                </a>
+            </div>
+
+            <p class="fw-bold">
+                Total Records:
+                @ViewBag.TotalRecords
+            </p>
+
+            <form method="get" class="row mb-3">
+
+                <div class="col-md-3">
+
+                    <input type="text"
+                        name="searchString"
+                        class="form-control"
+                        placeholder="Search..."
+                        value="@ViewData["CurrentFilter"]" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select name="departmentFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Departments
+                        </option>
+
+                        @foreach (var dept in ViewBag.Departments)
+                        {
+                            <option value="@dept">
+                                @dept
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <select name="monthFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Months
+                        </option>
+
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">
+                                @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <select name="weekFilter"
+                            class="form-select">
+
+                        <option value="">
+                            All Weeks
+                        </option>
+
+                        <option value="CurrentWeek">
+                            Current Week
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Filter
+
+                    </button>
+
+                    <a asp-action="Index"
+                        class="btn btn-secondary">
+                            Clear
+                    </a>
+
+                </div>
+
+            </form>
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Employee Name</th>
+                        <th>Department</th>
+                        <th>Gender</th>
+                        <th>Date Of Birth</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.EmployeeCode</td>
+                            <td>@employee.EmployeeName</td>
+                            <td>@employee.Department?.DepartmentName</td>
+                            <td>@employee.Gender</td>
+                            <td>@employee.DateOfBirth.ToString("dd-MMM-yyyy")</td>
+                            <td>@employee.Salary.ToString("N2")</td>
+                            <td>
+                                @if (employee.IsActive)
+                                {
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        Inactive
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+
+                                <button type="button"
+                                        class="btn btn-info btn-sm"
+                                        onclick="openEmployeeModal('/Employee/Details/@employee.EmployeeId')">
+                                        <i class="bi bi-info-lg"></i>
+
+                                    Details
+
+                                </button>
+
+                                @if (role != "Manager" && role != "User")
+                                {
+                                    <button type="button"
+                                            class="btn btn-warning btn-sm"
+                                            onclick="openEmployeeModal('/Employee/Edit/@employee.EmployeeId')">
+                                            <i class="bi bi-pencil-square"></i>
+
+                                        Edit
+
+                                    </button>
+                                }
+
+                                <form asp-action="ToggleStatus"
+                                    asp-route-id="@employee.EmployeeId"
+                                    method="post"
+                                    style="display:inline;">
+
+                                    @Html.AntiForgeryToken()
+
+                                    @if (employee.IsActive)
+                                    {
+                                        <button type="submit"
+                                                class="btn btn-dark btn-sm">
+
+                                            <i class="bi bi-x-circle"></i>
+                                            Deactivate
+
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm">
+
+                                            <i class="bi bi-check-circle"></i>
+                                            Activate
+
+                                        </button>
+                                    }
+
+                                </form>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <nav>
+
+                <ul class="pagination justify-content-center">
+
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+
+                            <a class="page-link"
+                                asp-action="Index"
+                                asp-route-page="@(ViewBag.CurrentPage - 1)"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-genderFilter="@ViewBag.GenderFilter"
+                                asp-route-departmentFilter="@ViewBag.DepartmentFilter"
+                                asp-route-monthFilter="@ViewBag.MonthFilter">
+
+                                    Previous
+
+                            </a>
+
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item
+                            @(i == ViewBag.CurrentPage
+                                ? "active"
+                                : "")">
+
+                            <a class="page-link"
+                                asp-action="Index"
+                                asp-route-page="@i"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-genderFilter="@ViewBag.GenderFilter"
+                                asp-route-departmentFilter="@ViewBag.DepartmentFilter"
+                                asp-route-monthFilter="@ViewBag.MonthFilter">
+
+                                    @i
+
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+
+                            <a class="page-link"
+                                asp-action="Index"
+                                asp-route-page="@(ViewBag.CurrentPage + 1)"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-genderFilter="@ViewBag.GenderFilter"
+                                asp-route-departmentFilter="@ViewBag.DepartmentFilter"
+                                asp-route-monthFilter="@ViewBag.MonthFilter"
+                                asp-route-weekFilter="@ViewBag.WeekFilter">
+
+                                Next
+
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade"
+     id="employeeModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+        <div class="modal-content"
+             id="employeeModalContent">
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        function openEmployeeModal(url)
+        {
+            $.ajax({
+                url: url,
+                type: 'GET',
+
+                success: function (data)
+                {
+                    $("#employeeModalContent")
+                        .html(data);
+
+                    var modal =
+                        new bootstrap.Modal(
+                            document.getElementById(
+                                'employeeModal'));
+
+                    modal.show();
+
+                    $.validator.unobtrusive.parse(
+                        "#employeeModalContent");
+                },
+
+                error: function ()
+                {
+                    alert("Failed to load modal.");
+                }
+            });
+        }
+
+        function showToast(message)
+        {
+            $("#toastMessage").text(message);
+
+            var toast =
+                new bootstrap.Toast(
+                    document.getElementById('liveToast'));
+
+            toast.show();
+        }
+
+        $(document).on(
+            "submit",
+            "#createEmployeeForm",
+            function (e)
+            {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/Employee/Create',
+                    type: 'POST',
+                    data: $(this).serialize(),
+
+                    success: function (response)
+                    {
+                        if (response.success)
+                        {
+                            showToast("Employee created successfully.");
+
+                            setTimeout(function ()
+                            {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else
+                        {
+                            $("#employeeModalContent")
+                                .html(response);
+                        }
+                    },
+
+                    error: function ()
+                    {
+                        alert("Create failed.");
+                    }
+                });
+            });
+
+        function showToast(message)
+        {
+            $("#toastMessage").text(message);
+
+            var toast =
+                new bootstrap.Toast(
+                    document.getElementById('liveToast'));
+
+            toast.show();
+        }
+
+        $(document).on(
+            "submit",
+            "#editEmployeeForm",
+            function (e)
+            {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/Employee/Edit',
+                    type: 'POST',
+                    data: $(this).serialize(),
+
+                    success: function (response)
+                    {
+                        if (response.success)
+                        {
+                            showToast("Employee updated successfully.");
+
+                            setTimeout(function ()
+                            {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else
+                        {
+                            showToast("Failed to update employee.");
+                            $("#employeeModalContent")
+                                .html(response);
+                        }
+                    },
+
+                    error: function (xhr)
+                    {
+                        console.log(xhr.responseText);
+
+                        alert("Edit failed.");
+                    }
+                });
+            });
+
+        function showToast(message)
+        {
+            $("#toastMessage").text(message);
+
+            var toast =
+                new bootstrap.Toast(
+                    document.getElementById('liveToast'));
+
+            toast.show();
+        }
+
+        $(document).on(
+            "submit",
+            "#deleteEmployeeForm",
+            function (e)
+            {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/Employee/DeleteConfirmed',
+                    type: 'POST',
+                    data: $(this).serialize(),
+
+                    success: function (response)
+                    {
+                        if (response.success)
+                        {
+                            showToast("Employee deleted successfully.");
+                            setTimeout(function ()
+                            {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+
+                    error: function ()
+                    {
+                        alert("Delete failed.");
+                    }
+                });
+            });
+
+    </script>
+}

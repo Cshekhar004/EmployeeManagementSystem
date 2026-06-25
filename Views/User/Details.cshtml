@@ -1,0 +1,58 @@
+@model EmployeeManagement.Models.User
+
+@{
+    Layout = null;
+}
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-info text-white">
+            <h4>User Details</h4>
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>User Id:</strong> @Model.UserId</p>
+
+            <p><strong>Name:</strong> @Model.Name</p>
+
+            <p><strong>Username:</strong> @Model.Username</p>
+
+            <p><strong>Email:</strong> @Model.Email</p>
+
+            <p><strong>Role:</strong> @Model.Role</p>
+
+            <p>
+                <strong>Status:</strong>
+
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactive</span>
+                }
+            </p>
+
+            <p>
+                <strong>Created Date:</strong>
+                @Model.CreatedDate.ToString("dd-MMM-yyyy hh:mm tt")
+            </p>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,37 @@
+@model EmployeeManagement.Models.Role
+
+@{
+    ViewData["Title"] = "Role Details";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-info text-white">
+            <h4>Role Details</h4>
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Role Id:</strong> @Model.RoleId</p>
+
+            <p><strong>Role Name:</strong> @Model.RoleName</p>
+
+            <p><strong>Description:</strong> @Model.Description</p>
+
+            <p>
+                <strong>Created Date:</strong>
+                @Model.CreatedDate.ToString("dd-MMM-yyyy hh:mm tt")
+            </p>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

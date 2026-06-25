@@ -1,0 +1,180 @@
+@model IEnumerable<EmployeeManagement.Models.Role>
+
+@{
+    ViewData["Title"] = "Role Management";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                Role Management
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+
+                <a asp-action="Create"class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i>
+                    Create Role
+                </button>
+                </a>
+
+            </div>
+
+            <form method="get"
+                  class="row mb-3">
+
+                <div class="col-md-4">
+
+                    <input type="text"
+                           name="searchString"
+                           class="form-control"
+                           placeholder="Search roles..."
+                           value="@ViewData["CurrentFilter"]" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Search
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Clear
+                    </a>
+
+                </div>
+
+            </form>
+
+            <p class="fw-bold">
+                Total Records:
+                @ViewBag.TotalRecords
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="roleid_desc" asp-route-searchString="@ViewData["CurrentFilter"]">Role Id</a></th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="rolename" asp-route-searchString="@ViewData["CurrentFilter"]">Role Name</a></th>
+                            <th>Description</th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="created" asp-route-searchString="@ViewData["CurrentFilter"]">Created Date</a></th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Any())
+                        {
+                            foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td>@role.RoleId</td>
+
+                                    <td>@role.RoleName</td>
+
+                                    <td>@role.Description</td>
+
+                                    <td>
+                                        @role.CreatedDate.ToString("dd-MMM-yyyy")
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="Details"
+                                            asp-route-id="@role.RoleId"
+                                            class="btn btn-info btn-sm">
+                                                Details
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                            asp-route-id="@role.RoleId"
+                                            class="btn btn-warning btn-sm">
+                                                Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                            asp-route-id="@role.RoleId"
+                                            class="btn btn-danger btn-sm">
+                                                Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
+                                    No roles found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage - 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+                                Previous
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@i"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+                                @i
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage + 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+                                Next
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>

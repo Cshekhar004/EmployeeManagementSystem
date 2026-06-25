@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                Privacy Policy
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                At Employee Management System (EMS), we are committed to
+                protecting the privacy and security of employee information.
+                This page explains how data is collected, stored, and used
+                within the system.
+            </p>
+
+            <hr />
+
+            <h5>1. Information We Collect</h5>
+
+            <ul>
+                <li>Employee Name</li>
+                <li>Employee Code</li>
+                <li>Department Information</li>
+                <li>Gender</li>
+                <li>Date of Birth</li>
+                <li>Salary Details</li>
+                <li>Login and Audit Information</li>
+            </ul>
+
+            <h5>2. Purpose of Data Collection</h5>
+
+            <p>
+                Employee data is collected solely for organizational and
+                administrative purposes, including:
+            </p>
+
+            <ul>
+                <li>Employee record management</li>
+                <li>Department management</li>
+                <li>Reporting and analytics</li>
+                <li>Audit tracking and compliance</li>
+                <li>User authentication and security</li>
+            </ul>
+
+            <h5>3. Data Security</h5>
+
+            <p>
+                EMS implements role-based access control to ensure that only
+                authorized users can access sensitive information.
+                Administrative actions are logged through the Audit Trail
+                module for accountability and monitoring.
+            </p>
+
+            <h5>4. User Roles and Permissions</h5>
+
+            <ul>
+                <li><strong>Admin:</strong> Full system access.</li>
+                <li><strong>HR:</strong> Employee and department management access.</li>
+                <li><strong>Manager:</strong> View employee information and reports.</li>
+                <li><strong>User:</strong> Limited access based on assigned permissions.</li>
+            </ul>
+
+            <h5>5. Audit Logs</h5>
+
+            <p>
+                Important actions performed within the system may be recorded
+                in the Audit Trail for security, monitoring, and compliance
+                purposes.
+            </p>
+
+            <h5>6. Data Retention</h5>
+
+            <p>
+                Employee records are retained until they are removed by an
+                authorized administrator or according to organizational
+                policies.
+            </p>
+
+            <h5>7. Contact</h5>
+
+            <p>
+                For questions regarding data privacy, security, or access
+                permissions, please contact the system administrator.
+            </p>
+
+        </div>
+
+        <div class="card-footer text-center text-muted">
+
+            Last Updated:
+            @DateTime.Now.ToString("dd MMM yyyy")
+
+        </div>
+
+    </div>
+
+</div>

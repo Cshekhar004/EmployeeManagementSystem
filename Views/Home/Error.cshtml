@@ -1,0 +1,59 @@
+@model EmployeeManagement.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+
+    <div class="card border-danger shadow">
+
+        <div class="card-header bg-danger text-white">
+
+            <h3>
+                Something Went Wrong
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <p class="lead">
+
+                An unexpected error occurred while
+                processing your request.
+
+            </p>
+
+            <p>
+
+                Please try again later.
+
+            </p>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+
+                    <strong>
+                        Request Id:
+                    </strong>
+
+                    @Model.RequestId
+
+                </p>
+            }
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-primary">
+
+                Go To Home Page
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

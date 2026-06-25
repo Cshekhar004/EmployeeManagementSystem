@@ -1,0 +1,147 @@
+@model EmployeeManagement.Models.Employee
+
+<form id="createEmployeeForm"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div class="modal-header bg-success text-white">
+
+        <h5 class="modal-title">
+            Create Employee
+        </h5>
+
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal">
+        </button>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="EmployeeCode"
+                   class="form-label">
+            </label>
+
+            <input asp-for="EmployeeCode"
+                   class="form-control"
+                   readonly />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="EmployeeName"
+                   class="form-label">
+            </label>
+
+            <input asp-for="EmployeeName"
+                   class="form-control" />
+
+            <span asp-validation-for="EmployeeName"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="DepartmentId"
+                   class="form-label">
+                Department
+            </label>
+
+            <select asp-for="DepartmentId"
+                    class="form-select"
+                    asp-items="ViewBag.Departments">
+
+                <option value="">
+                    -- Select Department --
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Gender
+            </label>
+
+            <div>
+
+                <input asp-for="Gender"
+                       type="radio"
+                       value="Male" /> Male
+
+                <input asp-for="Gender"
+                       type="radio"
+                       value="Female"
+                       class="ms-3" /> Female
+
+                <input asp-for="Gender"
+                       type="radio"
+                       value="Other"
+                       class="ms-3" /> Other
+
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="DateOfBirth"
+                   class="form-label">
+            </label>
+
+            <input asp-for="DateOfBirth"
+                   type="date"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Salary"
+                   class="form-label">
+            </label>
+
+            <input asp-for="Salary"
+                   class="form-control" />
+
+            <span asp-validation-for="Salary"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+
+            Cancel
+
+        </button>
+
+        <button type="submit"
+                class="btn btn-success">
+
+            Save Employee
+
+        </button>
+
+    </div>
+
+</form>

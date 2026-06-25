@@ -1,0 +1,439 @@
+@model IEnumerable<EmployeeManagement.Models.User>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                User Management
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="openUserModal('/User/Create')">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Create User
+
+                </button>
+
+            </div>
+
+            <form method="get"
+                  class="row mb-3">
+
+                <div class="col-md-4">
+
+                    <input type="text"
+                           name="searchString"
+                           class="form-control"
+                           placeholder="Search users..."
+                           value="@ViewData["CurrentFilter"]" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Search
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+
+                        Clear
+
+                    </a>
+
+                </div>
+
+            </form>
+
+            <p class="fw-bold">
+                Total Records:
+                @ViewBag.TotalRecords
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="userid_desc" asp-route-searchString="@ViewData["CurrentFilter"]">User Id</a></th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="name" asp-route-searchString="@ViewData["CurrentFilter"]">Name</a></th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="username" asp-route-searchString="@ViewData["CurrentFilter"]">Username</a></th>
+                            <th>Email</th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="role" asp-route-searchString="@ViewData["CurrentFilter"]">Role</a></th>
+                            <th>Status</th>
+                            <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="created" asp-route-searchString="@ViewData["CurrentFilter"]">Created Date</a></th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Any())
+                        {
+                            foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.UserId</td>
+                                    <td>@user.Name</td>
+                                    <td>@user.Username</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.Role</td>
+
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <span class="badge bg-success">
+                                                Active
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                Inactive
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @user.CreatedDate.ToString("dd-MMM-yyyy")
+                                    </td>
+
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-info btn-sm"
+                                                onclick="openUserModal('/User/Details/@user.UserId')">
+
+                                            <i class="bi bi-eye"></i>
+                                            Details
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-warning btn-sm"
+                                                onclick="openUserModal('/User/Edit/@user.UserId')">
+
+                                            <i class="bi bi-pencil-square"></i>
+                                            Edit
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="openUserModal('/User/Delete/@user.UserId')">
+
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-secondary btn-sm"
+                                                onclick="openUserModal('/User/ResetPassword/@user.UserId')">
+
+                                            <i class="bi bi-key"></i>
+                                            Reset Password
+
+                                        </button>
+
+                                        <form asp-action="ToggleStatus"
+                                            asp-route-id="@user.UserId"
+                                            method="post"
+                                            style="display:inline;">
+
+                                            @Html.AntiForgeryToken()
+
+                                            @if (user.IsActive)
+                                            {
+                                                <button type="submit"
+                                                        class="btn btn-dark btn-sm">
+                                                    Deactivate
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit"
+                                                        class="btn btn-success btn-sm">
+                                                    Activate
+                                                </button>
+                                            }
+
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center text-muted py-4">
+
+                                    No users found.
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage - 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+
+                                Previous
+
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@i"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+
+                                @i
+
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage + 1)"
+                               asp-route-searchString="@ViewData["CurrentFilter"]">
+
+                                Next
+
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade"
+     id="userModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+                    User Management
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body"
+                 id="userModalBody">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function openUserModal(url)
+        {
+            fetch(url)
+                .then(response => response.text())
+                .then(html =>
+                {
+                    document.getElementById("userModalBody")
+                        .innerHTML = html;
+
+                    var modal =
+                        new bootstrap.Modal(
+                            document.getElementById("userModal"));
+
+                    modal.show();
+                });
+        }
+
+        document.addEventListener("submit", function (e) {
+
+            if (e.target && e.target.id === "deleteUserForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        location.href = "/User/Index";
+                    }
+                });
+
+                return;
+            }
+
+            if (e.target && e.target.id === "createUserForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(async response => {
+
+                    const contentType =
+                        response.headers.get("content-type");
+
+                    if (contentType &&
+                        contentType.includes("application/json")) {
+
+                        const result =
+                            await response.json();
+
+                        if (result.success) {
+                            location.reload();
+                        }
+                    }
+                    else {
+                        const html =
+                            await response.text();
+
+                        document.getElementById("userModalBody")
+                            .innerHTML = html;
+                    }
+                });
+            }
+
+            if (e.target && e.target.id === "editUserForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(async response => {
+
+                    const contentType =
+                        response.headers.get("content-type");
+
+                    if (contentType &&
+                        contentType.includes("application/json")) {
+
+                        const result =
+                            await response.json();
+
+                        if (result.success) {
+                            location.reload();
+                        }
+                    }
+                    else {
+                        const html =
+                            await response.text();
+
+                        document.getElementById("userModalBody")
+                            .innerHTML = html;
+                    }
+                });
+            }
+
+            if (e.target && e.target.id === "deleteUserForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(async response => {
+                    const contentType =
+                        response.headers.get("content-type");
+
+                    if (contentType &&
+                        contentType.includes("application/json")) {
+
+                        const result =
+                            await response.json();
+
+                        if (result.success) {
+                            location.reload();
+                        }
+                    }
+                    else {
+                        const html =
+                            await response.text();
+
+                        document.getElementById("userModalBody")
+                            .innerHTML = html;
+                    }
+                });
+            }
+
+        });
+
+    </script>
+}

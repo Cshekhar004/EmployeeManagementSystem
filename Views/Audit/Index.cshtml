@@ -1,0 +1,113 @@
+@model IEnumerable<EmployeeManagement.Models.AuditLog>
+
+@{
+    ViewData["Title"] = "Audit Trail";
+}
+
+<h3>Audit Trail</h3>
+
+<p>
+    <strong>
+        Total Records:
+        @ViewBag.TotalRecords
+    </strong>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Action</th>
+            <th>Record</th>
+            <th>Performed By</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.Module
+                </td>
+
+                <td>
+                    @item.Action
+                </td>
+
+                <td>
+                    @item.RecordInfo
+                </td>
+
+                <td>
+                    @item.Username
+                </td>
+
+                <td>
+                    @item.ActionDate.ToString(
+                        "dd-MMM-yyyy hh:mm:ss tt")
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<nav>
+
+    <ul class="pagination justify-content-center">
+
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <li class="page-item">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage - 1)">
+
+                    Previous
+
+                </a>
+
+            </li>
+        }
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@i">
+
+                    @i
+
+                </a>
+
+            </li>
+        }
+
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <li class="page-item">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@(ViewBag.CurrentPage + 1)">
+
+                    Next
+
+                </a>
+
+            </li>
+        }
+
+    </ul>
+
+</nav>

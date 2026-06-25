@@ -1,0 +1,81 @@
+@model EmployeeManagement.Models.ViewModels.EditUserViewModel
+
+@{
+    Layout = null;
+}
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning">
+            <h4>Edit User</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form id="editUserForm"asp-action="Edit"method="post">
+
+                <input asp-for="UserId" type="hidden" />
+
+                <div class="mb-3">
+                    <label>Name</label>
+                    <input asp-for="Name"
+                           class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Username</label>
+                    <input asp-for="Username"
+                           class="form-control"
+                           readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input asp-for="Email"
+                           class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Role</label>
+                    <select asp-for="Role"
+                            class="form-select">
+                        <option>Admin</option>
+                        <option>HR</option>
+                        <option>Manager</option>
+                        <option>User</option>
+                    </select>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="IsActive"
+                           class="form-check-input" />
+
+                    <label asp-for="IsActive"
+                           class="form-check-label">
+                        Active
+                    </label>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-warning">
+                    Update
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

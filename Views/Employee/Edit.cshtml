@@ -1,0 +1,165 @@
+@model EmployeeManagement.Models.Employee
+
+<form id="editEmployeeForm"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input asp-for="EmployeeId"
+           type="hidden" />
+
+    <div class="modal-header bg-warning">
+
+        <h5 class="modal-title">
+            Edit Employee
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal">
+        </button>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div asp-validation-summary="All"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="EmployeeCode"
+                   class="form-label">
+            </label>
+
+            <input asp-for="EmployeeCode"
+                   class="form-control"
+                   readonly />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="EmployeeName"
+                   class="form-label">
+            </label>
+
+            <input asp-for="EmployeeName"
+                   class="form-control" />
+
+            <span asp-validation-for="EmployeeName"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="DepartmentId"
+                   class="form-label">
+                Department
+            </label>
+
+            <select asp-for="DepartmentId"
+                    class="form-select"
+                    asp-items="ViewBag.Departments">
+
+                <option value="">
+                    -- Select Department --
+                </option>
+
+            </select>
+
+            <span asp-validation-for="DepartmentId"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Gender
+            </label>
+
+            <select asp-for="Gender"
+                    class="form-select">
+
+                <option value="">
+                    -- Select Gender --
+                </option>
+
+                <option value="Male">
+                    Male
+                </option>
+
+                <option value="Female">
+                    Female
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+            <span asp-validation-for="Gender"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="DateOfBirth"
+                   class="form-label">
+            </label>
+
+            <input asp-for="DateOfBirth"
+                   type="date"
+                   class="form-control" />
+
+            <span asp-validation-for="DateOfBirth"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Salary"
+                   class="form-label">
+            </label>
+
+            <input asp-for="Salary"
+                   class="form-control" />
+
+            <span asp-validation-for="Salary"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+
+            Cancel
+
+        </button>
+
+        <button type="submit"
+                class="btn btn-warning">
+
+            Update Employee
+
+        </button>
+
+    </div>
+
+</form>

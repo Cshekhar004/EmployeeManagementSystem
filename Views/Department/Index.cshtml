@@ -1,0 +1,332 @@
+@using Microsoft.AspNetCore.Http
+
+@{
+    string? role =
+        Context.Session.GetString("Role");
+}
+
+@model IEnumerable<EmployeeManagement.Models.Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4>Department List</h4>
+        </div>
+
+        <div class="card-body">
+
+            @if (role == "Admin")
+            {
+                <button type="button"
+                        class="btn btn-success mb-3"
+                        onclick="openDepartmentModal('/Department/Create')">
+                        <i class="bi bi-plus-circle"></i>
+
+                    Create Department
+
+                </button>
+            }
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Department Name</th>
+                        <th>Employees</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var department in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @department.DepartmentName
+                            </td>
+
+                            <td>
+                                @(department.Employees?.Count ?? 0)
+                            </td>
+
+                            <td>
+
+                                <button type="button"
+                                        class="btn btn-info btn-sm"
+                                        onclick="openDepartmentModal('/Department/Details/@department.DepartmentId')">
+                                        <i class="bi bi-eye"></i>
+
+                                    Details
+
+                                </button>
+
+                                @if (role == "Admin")
+                                {
+                                    <button type="button"
+                                            class="btn btn-warning btn-sm"
+                                            onclick="openDepartmentModal('/Department/Edit/@department.DepartmentId')">
+                                            <i class="bi bi-pencil-square"></i>
+
+                                        Edit
+
+                                    </button>
+                                }
+
+                                @if (role == "Admin")
+                                {
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="openDepartmentModal('/Department/Delete/@department.DepartmentId')">
+                                            <i class="bi bi-trash"></i>
+
+                                        Delete
+
+                                    </button>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+
+        function showDepartmentToast(message)
+        {
+            document.getElementById(
+                "departmentToastMessage")
+                .innerText = message;
+
+            var toast =
+                new bootstrap.Toast(
+                    document.getElementById(
+                        "departmentToast"));
+
+            toast.show();
+        }
+
+        function openDepartmentModal(url)
+        {
+            fetch(url)
+                .then(res => res.text())
+                .then(data =>
+                {
+                    document.getElementById(
+                        "departmentModalBody")
+                        .innerHTML = data;
+
+                    var modal =
+                        new bootstrap.Modal(
+                            document.getElementById(
+                                "departmentModal"));
+
+                    modal.show();
+
+                    bindDepartmentForms();
+                });
+        }
+
+        function bindDepartmentForms()
+        {
+            const createForm =
+                document.getElementById(
+                    "createDepartmentForm");
+
+            if (createForm)
+            {
+                createForm.addEventListener(
+                    "submit",
+                    function(e)
+                    {
+                        e.preventDefault();
+
+                        fetch('/Department/Create',
+                        {
+                            method: 'POST',
+                            body: new FormData(createForm)
+                        })
+                        .then(res => res.json())
+                        .then(result =>
+                        {
+                            if(result.success)
+                            {
+                                var modalElement =
+                                    document.getElementById(
+                                        "departmentModal");
+
+                                var modal =
+                                    bootstrap.Modal.getInstance(
+                                        modalElement);
+
+                                modal.hide();
+
+                                showDepartmentToast(
+                                    "Department created successfully");
+
+                                setTimeout(() =>
+                                {
+                                    location.reload();
+                                }, 800);
+                            }
+                            else
+                            {
+                                alert("Create failed");
+                            }
+                        });
+                    });
+            }
+
+            const editForm =
+                document.getElementById(
+                    "editDepartmentForm");
+
+            if (editForm)
+            {
+                editForm.addEventListener(
+                    "submit",
+                    function(e)
+                    {
+                        e.preventDefault();
+
+                        fetch('/Department/Edit',
+                        {
+                            method: 'POST',
+                            body: new FormData(editForm)
+                        })
+                        .then(res => res.json())
+                        .then(result =>
+                        {
+                            if(result.success)
+                            {
+                                var modalElement =
+                                    document.getElementById(
+                                        "departmentModal");
+
+                                var modal =
+                                    bootstrap.Modal.getInstance(
+                                        modalElement);
+
+                                modal.hide();
+
+                                showDepartmentToast(
+                                    "Department updated successfully");
+
+                                setTimeout(() =>
+                                {
+                                    location.reload();
+                                }, 800);
+                            }
+                            else
+                            {
+                                alert("Edit failed");
+                            }
+                        });
+                    });
+            }
+
+            const deleteForm =
+                document.getElementById(
+                    "deleteDepartmentForm");
+
+            if (deleteForm)
+            {
+                deleteForm.addEventListener(
+                    "submit",
+                    function(e)
+                    {
+                        e.preventDefault();
+
+                        fetch('/Department/DeleteDepartment',
+                        {
+                            method: 'POST',
+                            body: new FormData(deleteForm)
+                        })
+                        .then(res => res.json())
+                        .then(result =>
+                        {
+                            if(result.success)
+                            {
+                                var modalElement =
+                                    document.getElementById(
+                                        "departmentModal");
+
+                                var modal =
+                                    bootstrap.Modal.getInstance(
+                                        modalElement);
+
+                                modal.hide();
+
+                                showDepartmentToast(
+                                    "Department deleted successfully");
+
+                                setTimeout(() =>
+                                {
+                                    location.reload();
+                                }, 800);
+                            }
+                            else
+                            {
+                                alert("Delete failed");
+                            }
+                        });
+                    });
+            }
+        }
+
+    </script>
+}
+
+<div class="modal fade"
+     id="departmentModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Department
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body"
+                 id="departmentModalBody">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
