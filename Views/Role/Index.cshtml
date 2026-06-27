@@ -18,11 +18,14 @@
 
             <div class="mb-3">
 
-                <a asp-action="Create"class="btn btn-success">
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="openRoleModal('/Role/Create')">
+
                     <i class="bi bi-plus-circle"></i>
                     Create Role
+
                 </button>
-                </a>
 
             </div>
 
@@ -92,23 +95,33 @@
                                     </td>
 
                                     <td>
-                                        <a asp-action="Details"
-                                            asp-route-id="@role.RoleId"
-                                            class="btn btn-info btn-sm">
-                                                Details
-                                        </a>
+                                        <button type="button"
+                                                class="btn btn-info btn-sm"
+                                                onclick="openRoleModal('/Role/Details/@role.RoleId')">
 
-                                        <a asp-action="Edit"
-                                            asp-route-id="@role.RoleId"
-                                            class="btn btn-warning btn-sm">
-                                                Edit
-                                        </a>
+                                            <i class="bi bi-eye"></i>
+                                            Details
 
-                                        <a asp-action="Delete"
-                                            asp-route-id="@role.RoleId"
-                                            class="btn btn-danger btn-sm">
-                                                Delete
-                                        </a>
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-warning btn-sm"
+                                                onclick="openRoleModal('/Role/Edit/@role.RoleId')">
+
+                                            <i class="bi bi-pencil-square"></i>
+                                            Edit
+
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="openRoleModal('/Role/Delete/@role.RoleId')">
+
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+
+                                        </button>
+                                        
                                     </td>
                                 </tr>
                             }
@@ -178,3 +191,131 @@
     </div>
 
 </div>
+
+<div class="modal fade"
+     id="roleModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+                    Role Management
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body"
+                 id="roleModalBody">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        function openRoleModal(url)
+        {
+            fetch(url)
+                .then(response => response.text())
+                .then(html =>
+                {
+                    document.getElementById("roleModalBody")
+                        .innerHTML = html;
+
+                    var modal =
+                        new bootstrap.Modal(
+                            document.getElementById("roleModal"));
+
+                    modal.show();
+                });
+        }
+
+        document.addEventListener("submit", function (e) {
+
+            if (e.target && e.target.id === "createRoleForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(async response => {
+
+                    const contentType =
+                        response.headers.get("content-type");
+
+                    if (contentType &&
+                        contentType.includes("application/json")) {
+
+                        const result =
+                            await response.json();
+
+                        if (result.success) {
+                            location.reload();
+                        }
+                    }
+                    else {
+                        const html =
+                            await response.text();
+
+                        document.getElementById("roleModalBody")
+                            .innerHTML = html;
+                    }
+                });
+            }
+
+            if (e.target && e.target.id === "editRoleForm") {
+                e.preventDefault();
+
+                const form = e.target;
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                })
+                .then(async response => {
+
+                    const contentType =
+                        response.headers.get("content-type");
+
+                    if (contentType &&
+                        contentType.includes("application/json")) {
+
+                        const result =
+                            await response.json();
+
+                        if (result.success) {
+                            location.reload();
+                        }
+                    }
+                    else {
+                        const html =
+                            await response.text();
+
+                        document.getElementById("roleModalBody")
+                            .innerHTML = html;
+                    }
+                });
+            }
+
+        });
+
+    </script>
+}

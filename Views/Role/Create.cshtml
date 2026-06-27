@@ -1,6 +1,10 @@
 @model EmployeeManagement.Models.Role
 
 @{
+    Layout = null;
+}
+
+@{
     ViewData["Title"] = "Create Role";
 }
 
@@ -14,8 +18,9 @@
 
         <div class="card-body">
 
-            <form asp-action="Create"
-                  method="post">
+            <form id="createRoleForm"
+                asp-action="Create"
+                method="post">
 
                 <div class="mb-3">
                     <label>Role Name</label>

@@ -235,3 +235,11 @@ body {
     max-height: 500px;
     overflow-y: auto;
 }
+
+.footer-links-row ul {
+    margin-bottom: 0;
+}
+
+.footer-links li {
+    margin-bottom: 6px;
+}

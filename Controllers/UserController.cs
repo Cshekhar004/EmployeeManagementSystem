@@ -286,9 +286,10 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> ToggleStatusConfirm(int id)
         {
-            var user = await _context.Users
+            var user =
+                await _context.Users
                 .FirstOrDefaultAsync(u =>
                     u.UserId == id &&
                     !u.IsDeleted);
@@ -299,35 +300,6 @@ namespace EmployeeManagement.Controllers
             }
 
             return PartialView(user);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u =>
-                    u.UserId == id &&
-                    !u.IsDeleted);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.IsDeleted = true;
-            user.DeletedDate = DateTime.Now;
-
-            LogUserAudit(
-                "Deleted",
-                user.Username);
-
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] =
-                "User deleted successfully.";
-
-            return RedirectToAction("Index");
         }
 
         [HttpPost]

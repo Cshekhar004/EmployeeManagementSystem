@@ -1,6 +1,10 @@
 @model EmployeeManagement.Models.Role
 
 @{
+    Layout = null;
+}
+
+@{
     ViewData["Title"] = "Edit Role";
 }
 
@@ -14,8 +18,9 @@
 
         <div class="card-body">
 
-            <form asp-action="Edit"
-                  method="post">
+            <form id="editRoleForm"
+                asp-action="Edit"
+                method="post">
 
                 <input asp-for="RoleId"
                        type="hidden" />

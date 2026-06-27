@@ -2,102 +2,162 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
 
-    <div class="card shadow">
+    <div class="card shadow-lg border-0">
 
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">
-                Privacy Policy
-            </h3>
+        <div class="card-header bg-primary text-white p-4">
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-shield-lock-fill fs-1"></i>
+
+                <div>
+                    <h2 class="mb-1">Privacy & Security Policy</h2>
+                    <p class="mb-0">
+                        How Employee Management System protects employee and system data.
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
-            <p>
-                At Employee Management System (EMS), we are committed to
-                protecting the privacy and security of employee information.
-                This page explains how data is collected, stored, and used
-                within the system.
-            </p>
+            <div class="alert alert-info d-flex align-items-center">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                EMS uses role-based access, session authentication, and audit tracking to protect sensitive information.
+            </div>
 
-            <hr />
+            <div class="row g-4 mt-2">
 
-            <h5>1. Information We Collect</h5>
+                <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body">
+                            <h5 class="text-primary">
+                                <i class="bi bi-database-lock"></i>
+                                Data We Collect
+                            </h5>
 
-            <ul>
-                <li>Employee Name</li>
-                <li>Employee Code</li>
-                <li>Department Information</li>
-                <li>Gender</li>
-                <li>Date of Birth</li>
-                <li>Salary Details</li>
-                <li>Login and Audit Information</li>
-            </ul>
+                            <ul class="mb-0">
+                                <li>Employee records and department details</li>
+                                <li>Salary and date of birth information</li>
+                                <li>User login and role information</li>
+                                <li>Audit trail and system activity logs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-            <h5>2. Purpose of Data Collection</h5>
+                <div class="col-md-6">
+                    <div class="card h-100 border-success">
+                        <div class="card-body">
+                            <h5 class="text-success">
+                                <i class="bi bi-bullseye"></i>
+                                Purpose of Data Usage
+                            </h5>
 
-            <p>
-                Employee data is collected solely for organizational and
-                administrative purposes, including:
-            </p>
+                            <ul class="mb-0">
+                                <li>Employee and department management</li>
+                                <li>Dashboard reporting and analytics</li>
+                                <li>User authentication and authorization</li>
+                                <li>Security monitoring and compliance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-            <ul>
-                <li>Employee record management</li>
-                <li>Department management</li>
-                <li>Reporting and analytics</li>
-                <li>Audit tracking and compliance</li>
-                <li>User authentication and security</li>
-            </ul>
+                <div class="col-md-6">
+                    <div class="card h-100 border-warning">
+                        <div class="card-body">
+                            <h5 class="text-warning">
+                                <i class="bi bi-person-lock"></i>
+                                Access Control
+                            </h5>
 
-            <h5>3. Data Security</h5>
+                            <p class="mb-2">
+                                Access is controlled according to user roles:
+                            </p>
 
-            <p>
-                EMS implements role-based access control to ensure that only
-                authorized users can access sensitive information.
-                Administrative actions are logged through the Audit Trail
-                module for accountability and monitoring.
-            </p>
+                            <ul class="mb-0">
+                                <li><strong>Admin:</strong> Full system access</li>
+                                <li><strong>HR:</strong> Employee and department access</li>
+                                <li><strong>Manager:</strong> Employee view access</li>
+                                <li><strong>User:</strong> Dashboard access only</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-            <h5>4. User Roles and Permissions</h5>
+                <div class="col-md-6">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body">
+                            <h5 class="text-danger">
+                                <i class="bi bi-clock-history"></i>
+                                Audit Trail
+                            </h5>
 
-            <ul>
-                <li><strong>Admin:</strong> Full system access.</li>
-                <li><strong>HR:</strong> Employee and department management access.</li>
-                <li><strong>Manager:</strong> View employee information and reports.</li>
-                <li><strong>User:</strong> Limited access based on assigned permissions.</li>
-            </ul>
+                            <p class="mb-0">
+                                Important system activities such as creating, editing,
+                                activating, deactivating, password reset, and role changes
+                                are recorded in the Audit Trail for accountability.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-            <h5>5. Audit Logs</h5>
+            </div>
 
-            <p>
-                Important actions performed within the system may be recorded
-                in the Audit Trail for security, monitoring, and compliance
-                purposes.
-            </p>
+            <hr class="my-4" />
 
-            <h5>6. Data Retention</h5>
+            <div class="row g-4">
 
-            <p>
-                Employee records are retained until they are removed by an
-                authorized administrator or according to organizational
-                policies.
-            </p>
+                <div class="col-md-4">
+                    <div class="text-center p-3 bg-light rounded shadow-sm h-100">
+                        <i class="bi bi-shield-check text-primary fs-2"></i>
+                        <h6 class="mt-2">Secure Sessions</h6>
+                        <p class="small text-muted mb-0">
+                            Login sessions are used to protect pages from unauthorized access.
+                        </p>
+                    </div>
+                </div>
 
-            <h5>7. Contact</h5>
+                <div class="col-md-4">
+                    <div class="text-center p-3 bg-light rounded shadow-sm h-100">
+                        <i class="bi bi-key text-success fs-2"></i>
+                        <h6 class="mt-2">Password Protection</h6>
+                        <p class="small text-muted mb-0">
+                            Users can change passwords and admins can reset passwords securely.
+                        </p>
+                    </div>
+                </div>
 
-            <p>
-                For questions regarding data privacy, security, or access
-                permissions, please contact the system administrator.
-            </p>
+                <div class="col-md-4">
+                    <div class="text-center p-3 bg-light rounded shadow-sm h-100">
+                        <i class="bi bi-people text-warning fs-2"></i>
+                        <h6 class="mt-2">Role-Based Access</h6>
+                        <p class="small text-muted mb-0">
+                            Users only see and access modules allowed for their assigned role.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-4 p-4 bg-light rounded">
+                <h5>
+                    <i class="bi bi-envelope"></i>
+                    Contact Administrator
+                </h5>
+
+                <p class="mb-0">
+                    For questions about privacy, permissions, account access,
+                    or audit records, please contact the system administrator.
+                </p>
+            </div>
 
         </div>
 
         <div class="card-footer text-center text-muted">
-
             Last Updated:
             @DateTime.Now.ToString("dd MMM yyyy")
-
         </div>
 
     </div>

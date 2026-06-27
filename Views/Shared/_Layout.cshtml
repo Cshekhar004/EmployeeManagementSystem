@@ -207,7 +207,7 @@
 
             </div>
 
-            <div class="p-4">
+            <div class="main-content p-4">
 
                 @await Html.PartialAsync("_Toast")
 
@@ -333,7 +333,7 @@
     </script>
 
     <footer class="saas-footer mt-auto">
-        <div class="container py-5">
+        <div class="container py-3">
 
             <div class="row">
 
@@ -349,13 +349,26 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="text-white">Quick Links</h5>
 
-                    <ul class="footer-links">
-                        <li><a href="/Home/Index">Dashboard</a></li>
-                        <li><a href="/Employee/Index">Employees</a></li>
-                        <li><a href="/Department/Index">Departments</a></li>
-                        <li><a href="/Home/Privacy">Privacy Policy</a></li>
-                        <li><a href="/Audit/Index">Audit Trail</a></li>
-                    </ul>
+                    <div class="row footer-links-row">
+
+                        <div class="col-6">
+                            <ul class="footer-links">
+                                <li><a href="/Home/Index">Dashboard</a></li>
+                                <li><a href="/Employee/Index">Employees</a></li>
+                                <li><a href="/Department/Index">Departments</a></li>
+                                <li><a href="/Home/Privacy">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6">
+                            <ul class="footer-links">
+                                <li><a href="/Audit/Index">Audit Trail</a></li>
+                                <li><a href="/User/Index">Users</a></li>
+                                <li><a href="/Role/Index">Roles</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
                 </div>
 
                 <!-- Social -->

@@ -136,15 +136,6 @@
                                         </button>
 
                                         <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="openUserModal('/User/Delete/@user.UserId')">
-
-                                            <i class="bi bi-trash"></i>
-                                            Delete
-
-                                        </button>
-
-                                        <button type="button"
                                                 class="btn btn-secondary btn-sm"
                                                 onclick="openUserModal('/User/ResetPassword/@user.UserId')">
 
@@ -153,29 +144,22 @@
 
                                         </button>
 
-                                        <form asp-action="ToggleStatus"
-                                            asp-route-id="@user.UserId"
-                                            method="post"
-                                            style="display:inline;">
-
-                                            @Html.AntiForgeryToken()
+                                        <button type="button"
+                                                class="btn @(user.IsActive ? "btn-danger" : "btn-success") btn-sm"
+                                                onclick="openUserModal('/User/ToggleStatusConfirm/@user.UserId')">
 
                                             @if (user.IsActive)
                                             {
-                                                <button type="submit"
-                                                        class="btn btn-dark btn-sm">
-                                                    Deactivate
-                                                </button>
+                                                <i class="bi bi-person-x"></i>
+                                                <span>Inactivate</span>
                                             }
                                             else
                                             {
-                                                <button type="submit"
-                                                        class="btn btn-success btn-sm">
-                                                    Activate
-                                                </button>
+                                                <i class="bi bi-person-check"></i>
+                                                <span>Activate</span>
                                             }
 
-                                        </form>
+                                        </button>
                                     </td>
                                 </tr>
                             }

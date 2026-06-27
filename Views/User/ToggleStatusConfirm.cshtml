@@ -1,0 +1,59 @@
+@model EmployeeManagement.Models.User
+
+@{
+    Layout = null;
+}
+
+<div class="card shadow border-0">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            Are you sure you want to
+            @(Model.IsActive ? "deactivate" : "activate")
+            this user?
+        </h5>
+
+        <p>
+            <strong>Username:</strong>
+            @Model.Username
+        </p>
+
+        <p>
+            <strong>Name:</strong>
+            @Model.Name
+        </p>
+
+        <form asp-action="ToggleStatus"
+              asp-route-id="@Model.UserId"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <button type="submit"
+                    class="btn @(Model.IsActive ? "btn-danger" : "btn-success")">
+
+                @if (Model.IsActive)
+                {
+                    <i class="bi bi-person-x"></i>
+                    <span>Confirm Deactivate</span>
+                }
+                else
+                {
+                    <i class="bi bi-person-check"></i>
+                    <span>Confirm Activate</span>
+                }
+
+            </button>
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                Cancel
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

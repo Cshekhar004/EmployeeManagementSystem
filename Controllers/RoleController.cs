@@ -121,7 +121,7 @@ namespace EmployeeManagement.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -141,7 +141,7 @@ namespace EmployeeManagement.Controllers
                         "RoleName",
                         "Role already exists.");
 
-                    return View(model);
+                    return PartialView(model);
                 }
 
                 model.CreatedDate = DateTime.Now;
@@ -157,10 +157,13 @@ namespace EmployeeManagement.Controllers
                 TempData["SuccessMessage"] =
                     "Role created successfully.";
 
-                return RedirectToAction("Index");
+                return Json(new
+                {
+                    success = true
+                });
             }
 
-            return View(model);
+            return PartialView(model);
         }
 
         [HttpGet]
@@ -175,7 +178,7 @@ namespace EmployeeManagement.Controllers
                 return NotFound();
             }
 
-            return View(role);
+            return PartialView(role);
         }
 
         [HttpGet]
@@ -190,7 +193,7 @@ namespace EmployeeManagement.Controllers
                 return NotFound();
             }
 
-            return View(role);
+            return PartialView(role);
         }
 
         [HttpPost]
@@ -221,10 +224,13 @@ namespace EmployeeManagement.Controllers
                 TempData["SuccessMessage"] =
                     "Role updated successfully.";
 
-                return RedirectToAction("Index");
+                return Json(new
+                {
+                    success = true
+                });
             }
 
-            return View(model);
+            return PartialView(model);
         }
 
         [HttpGet]
@@ -239,7 +245,7 @@ namespace EmployeeManagement.Controllers
                 return NotFound();
             }
 
-            return View(role);
+            return PartialView(role);
         }
 
         [HttpPost, ActionName("Delete")]
