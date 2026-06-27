@@ -323,7 +323,7 @@ Add screenshots here after uploading them to GitHub.
 Example:
 
 - Login Page
-  <img width="1918" height="930" alt="Screenshot 2026-06-27 145424" src="https://github.com/user-attachments/assets/dbf1b6f7-80ed-4dc3-b48f-59ca80575a62" />
+  <img width="1536" height="1024" alt="ChatGPT Image Jun 27, 2026, 03_20_44 PM" src="https://github.com/user-attachments/assets/52d9d8ec-05ce-4722-88f3-899fe1c84525" />
 
 - Dashboard
   <img width="1901" height="927" alt="Screenshot 2026-06-27 145455" src="https://github.com/user-attachments/assets/2a91d879-5775-4cf9-ada3-003579752216" />
