@@ -14,43 +14,64 @@
 
     <div class="card shadow">
 
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">
-                @(ViewData["PageTitle"] ?? "Employee List")
-            </h4>
+        <div class="card-header bg-primary text-white p-3">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+                    <h4 class="mb-1">
+                        <i class="bi bi-people-fill"></i>
+                        @(ViewData["PageTitle"] ?? "Employee List")
+                    </h4>
+
+                    <small class="opacity-75">
+                        Manage employee records, status, and analytics
+                    </small>
+                </div>
+
+                <span class="badge bg-light text-dark fs-6 px-3 py-2">
+                    Total: @ViewBag.TotalRecords
+                </span>
+
+            </div>
+
         </div>
 
         <div class="card-body">
-            <div class="mb-3">
+            <div class="row g-3 mb-4">
+
                 @if (role != "Manager" && role != "User")
                 {
-                    <button type="button"
-                            class="btn btn-success"
-                            onclick="openEmployeeModal('/Employee/Create')">
+                    <div class="col-lg-3">
+                        <button type="button"
+                                class="btn btn-success w-100"
+                                onclick="openEmployeeModal('/Employee/Create')">
+
                             <i class="bi bi-plus-circle"></i>
-
-                        Create Employee
-
-                    </button>
+                            Create Employee
+                        </button>
+                    </div>
                 }
 
-                <a asp-action="ExportToExcel"
-                    class="btn btn-primary ms-2">
+                <div class="col-lg-3">
+                    <a asp-action="ExportToExcel"
+                    class="btn btn-primary w-100">
+                        <i class="bi bi-file-earmark-excel"></i>
                         Export Excel
-                </a>
+                    </a>
+                </div>
 
-                <a asp-action="ExportToPdf"
-                    class="btn btn-danger ms-2">
+                <div class="col-lg-3">
+                    <a asp-action="ExportToPdf"
+                    class="btn btn-danger w-100">
+                        <i class="bi bi-file-earmark-pdf"></i>
                         Export PDF
-                </a>
+                    </a>
+                </div>
+
             </div>
 
-            <p class="fw-bold">
-                Total Records:
-                @ViewBag.TotalRecords
-            </p>
-
-            <form method="get" class="row mb-3">
+            <form method="get" class="row g-3 mb-4 align-items-end">
 
                 <div class="col-md-3">
 
@@ -177,7 +198,7 @@
                                 }
                             </td>
 
-                            <td>
+                            <td class="text-nowrap">
 
                                 <button type="button"
                                         class="btn btn-info btn-sm"

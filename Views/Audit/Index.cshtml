@@ -4,110 +4,166 @@
     ViewData["Title"] = "Audit Trail";
 }
 
-<h3>Audit Trail</h3>
+<div class="container mt-4 mb-4">
 
-<p>
-    <strong>
-        Total Records:
-        @ViewBag.TotalRecords
-    </strong>
-</p>
+    <div class="card shadow">
 
-<table class="table table-bordered table-striped">
+        <div class="card-header bg-primary text-white p-3">
 
-    <thead>
-        <tr>
-            <th>Module</th>
-            <th>Action</th>
-            <th>Record</th>
-            <th>Performed By</th>
-            <th>Date</th>
-        </tr>
-    </thead>
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-    <tbody>
+                <div>
+                    <h4 class="mb-1">
+                        <i class="bi bi-clock-history"></i>
+                        Audit Trail
+                    </h4>
 
-        @foreach (var item in Model)
-        {
-            <tr>
+                    <small class="opacity-75">
+                        Track system activities, user actions, and security events
+                    </small>
+                </div>
 
-                <td>
-                    @item.Module
-                </td>
+                <span class="badge bg-light text-dark fs-6 px-3 py-2">
+                    Total: @ViewBag.TotalRecords
+                </span>
 
-                <td>
-                    @item.Action
-                </td>
+            </div>
 
-                <td>
-                    @item.RecordInfo
-                </td>
+        </div>
 
-                <td>
-                    @item.Username
-                </td>
+        <div class="card-body">
 
-                <td>
-                    @item.ActionDate.ToString(
-                        "dd-MMM-yyyy hh:mm:ss tt")
-                </td>
+            <div class="table-responsive">
 
-            </tr>
-        }
+                <table class="table table-bordered table-hover align-middle">
 
-    </tbody>
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Module</th>
+                            <th>Action</th>
+                            <th>Record</th>
+                            <th>Performed By</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
 
-</table>
+                    <tbody>
 
-<nav>
+                        @if (Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
 
-    <ul class="pagination justify-content-center">
+                                    <td>
+                                        <strong>
+                                            @item.Module
+                                        </strong>    
+                                    </td>
 
-        @if (ViewBag.CurrentPage > 1)
-        {
-            <li class="page-item">
+                                    <td>
+                                        @{
+                                            string actionClass =
+                                                item.Action == "Created" ? "bg-success" :
+                                                item.Action == "Updated" ? "bg-warning text-dark" :
+                                                item.Action == "Deleted" ? "bg-danger" :
+                                                item.Action == "Activated" ? "bg-success" :
+                                                item.Action == "Deactivated" ? "bg-danger" :
+                                                item.Action == "Password Reset" ? "bg-secondary" :
+                                                "bg-info";
+                                        }
 
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-page="@(ViewBag.CurrentPage - 1)">
+                                        <span class="badge @actionClass">
+                                            @item.Action
+                                        </span>
+                                    </td>
 
-                    Previous
+                                    <td>
+                                        <strong>
+                                            @item.RecordInfo
+                                        </strong>
+                                    </td>
 
-                </a>
+                                    <td>
+                                        <i class="bi bi-person-circle text-primary"></i>
+                                        @item.Username
+                                    </td>
 
-            </li>
-        }
+                                    <td class="text-nowrap">
+                                        <i class="bi bi-calendar-event text-muted"></i>
+                                        @item.ActionDate.ToString("dd-MMM-yyyy hh:mm tt")
+                                    </td>
 
-        @for (int i = 1; i <= ViewBag.TotalPages; i++)
-        {
-            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
 
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-page="@i">
+                                    No audit records found.
 
-                    @i
+                                </td>
+                            </tr>
+                        }
 
-                </a>
+                    </tbody>
 
-            </li>
-        }
+                </table>
 
-        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-        {
-            <li class="page-item">
+            </div>
 
-                <a class="page-link"
-                   asp-action="Index"
-                   asp-route-page="@(ViewBag.CurrentPage + 1)">
+            <nav>
 
-                    Next
+                <ul class="pagination justify-content-center">
 
-                </a>
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
 
-            </li>
-        }
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage - 1)">
+                                Previous
+                            </a>
 
-    </ul>
+                        </li>
+                    }
 
-</nav>
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@i">
+                                @i
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@(ViewBag.CurrentPage + 1)">
+                                Next
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>
