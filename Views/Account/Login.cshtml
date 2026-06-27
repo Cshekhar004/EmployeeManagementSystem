@@ -10,168 +10,312 @@
 
 <head>
 
-    <title>Login</title>
+    <title>Login - Employee Management System</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 
     <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
     <style>
-
-        .card{
-            border-radius:20px;
-            animation:fadeIn .5s ease;
+        html, body {
+            height: 100%;
+            margin: 0;
         }
 
-        @@keyframes fadeIn{
-            from{
-                opacity:0;
-                transform:translateY(20px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef4ff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
         }
 
+        .login-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+        }
+
+        .login-left {
+            background: linear-gradient(135deg, #111827, #1d4ed8);
+            color: white;
+            padding: 60px 45px;
+            min-height: 560px;
+        }
+
+        .login-left .brand-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .login-left h1 {
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .login-left p {
+            color: #dbeafe;
+            line-height: 1.7;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 14px;
+            color: #e5e7eb;
+        }
+
+        .feature-item i {
+            color: #93c5fd;
+        }
+
+        .login-right {
+            padding: 55px 45px;
+        }
+
+        .login-title {
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .form-control {
+            height: 48px;
+            border-radius: 12px;
+        }
+
+        .input-group-text {
+            border-radius: 12px 0 0 12px;
+            background: #f8fafc;
+        }
+
+        .login-btn {
+            height: 48px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .forgot-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-footer-text {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @@media (max-width: 768px) {
+            .login-left {
+                display: none;
+            }
+
+            .login-right {
+                padding: 35px 25px;
+            }
+        }
     </style>
 
 </head>
 
-<body class=""login-bg" d-flex justify-content-center align-items-center"style="height:100vh;">
+<body>
 
-    <div class="container">
+    <div class="container px-3 d-flex justify-content-center align-items-center">
 
-        <div class="row justify-content-center mt-5">
+        <div class="login-wrapper">
 
-            <div class="col-md-4">
+            <div class="row g-0">
 
-                <div class="card login-card shadow-lg border-0">
+                <div class="col-md-6 login-left">
 
-                    <div class="card-header bg-primary text-white text-center py-4">
+                    <div class="brand-icon">
+                        <i class="bi bi-building-check"></i>
+                    </div>
 
-                        <h3>
+                    <h1>
+                        Employee Management System
+                    </h1>
+
+                    <p class="mt-3">
+                        Manage employees, departments, users, roles, and audit trails
+                        from one secure dashboard.
+                    </p>
+
+                    <div class="mt-4">
+
+                        <div class="feature-item">
                             <i class="bi bi-shield-lock-fill"></i>
-                        </h3>
+                            Role-based secure access
+                        </div>
 
-                        <h4>
-                            Employee Management System
-                        </h4>
+                        <div class="feature-item">
+                            <i class="bi bi-people-fill"></i>
+                            Employee and department management
+                        </div>
 
-                        <small>
-                            Secure Login
-                        </small>
+                        <div class="feature-item">
+                            <i class="bi bi-clock-history"></i>
+                            Audit trail and activity tracking
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            Dashboard analytics and reports
+                        </div>
 
                     </div>
 
-                    <div class="card-body">
+                </div>
 
-                        @if (TempData["ErrorMessage"] != null)
-                        {
-                            <div class="alert alert-danger">
-                                @TempData["ErrorMessage"]
-                            </div>
-                        }
+                <div class="col-md-6 login-right">
 
-                        @if (TempData["SuccessMessage"] != null)
-                        {
-                            <div class="alert alert-success">
-                                @TempData["SuccessMessage"]
-                            </div>
-                        }
-                        
+                    <div class="mb-4">
 
-                        <form asp-action="Login"
-                              method="post">
+                        <h2 class="login-title">
+                            Welcome Back
+                        </h2>
 
-                            <div class="mb-3">
+                        <p class="text-muted mb-0">
+                            Please login to continue to your dashboard.
+                        </p>
 
-                                <label class="fw-semibold">
-                                    <i class="bi bi-person-fill"></i>
-                                    Username
-                                </label>
+                    </div>
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <form asp-action="Login"
+                          method="post">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
 
                                 <input asp-for="Username"
-                                       class="form-control" />
-
-                                <span asp-validation-for="Username"
-                                      class="text-danger">
-                                </span>
+                                       class="form-control"
+                                       placeholder="Enter username" />
 
                             </div>
 
-                            <div class="mb-3">
-
-                                <label class="fw-semibold">
-                                    <i class="bi bi-lock-fill"></i>
-                                    Password
-                                </label>
-
-                                <div class="input-group">
-
-                                    <input asp-for="Password"
-                                        id="password"
-                                        type="password"
-                                        class="form-control" />
-
-                                    <button type="button"
-                                            class="btn btn-outline-secondary"
-                                            id="togglePassword">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </button>
-
-                                </div>
-
-                                <span asp-validation-for="Password"
-                                    class="text-danger">
-                                </span>
-
-                            </div>
-
-                            <div class="form-check mb-3">
-
-                                <input asp-for="RememberMe"
-                                    class="form-check-input">
-
-                                <label class="form-check-label">
-
-                                    Remember Me
-
-                                </label>
-
-                            </div>
-
-                            <button type="submit"
-                                class="btn btn-primary w-100 fw-bold">
-                                    <i class="bi bi-box-arrow-in-right"></i>
-                                    Login
-                            </button>
-
-                            <div class="text-center mt-3">
-                                <a asp-controller="Account"
-                                    asp-action="ForgotPassword"
-                                    class="text-decoration-none">
-                                        Forgot Password?
-                                </a>
-                            </div>
-
-                        </form>
-
-                        <hr>
-
-                        <div class="text-center">
-
-                            <small class="text-muted">
-
-                                © 2026 Employee Management System
-
-                            </small>
+                            <span asp-validation-for="Username"
+                                  class="text-danger small">
+                            </span>
 
                         </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+
+                                <input asp-for="Password"
+                                       id="passwordInput"
+                                       type="password"
+                                       class="form-control"
+                                       placeholder="Enter password" />
+
+                                <button class="btn btn-outline-secondary"
+                                        type="button"
+                                        onclick="togglePassword()">
+
+                                    <i class="bi bi-eye"
+                                       id="eyeIcon"></i>
+
+                                </button>
+
+                            </div>
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small">
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div class="form-check">
+
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="rememberMe" />
+
+                                <label class="form-check-label"
+                                       for="rememberMe">
+                                    Remember me
+                                </label>
+
+                            </div>
+
+                            <a asp-controller="Account"
+                               asp-action="ForgotPassword"
+                               class="forgot-link">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100 login-btn">
+
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Login
+
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-4 login-footer-text">
+
+                        &copy; @DateTime.Now.Year Employee Management System.
+                        Secure access only.
 
                     </div>
 
@@ -183,88 +327,26 @@
 
     </div>
 
-<script>
+    <script>
+        function togglePassword() {
+            const passwordInput =
+                document.getElementById("passwordInput");
 
-    const togglePassword =
-        document.getElementById("togglePassword");
+            const eyeIcon =
+                document.getElementById("eyeIcon");
 
-    const password =
-        document.getElementById("password");
-
-    togglePassword.addEventListener("click", function ()
-    {
-        if (password.type === "password")
-        {
-            password.type = "text";
-
-            this.innerHTML =
-                '<i class="bi bi-eye-slash"></i>';
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("bi-eye");
+                eyeIcon.classList.add("bi-eye-slash");
+            }
+            else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("bi-eye-slash");
+                eyeIcon.classList.add("bi-eye");
+            }
         }
-        else
-        {
-            password.type = "password";
-
-            this.innerHTML =
-                '<i class="bi bi-eye"></i>';
-        }
-    });
-
-</script>
-
-<style>
-
-.login-bg{
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e3a8a,
-        #3b82f6);
-    min-height:100vh;
-}
-
-.login-card{
-    border-radius:20px;
-    background:white;
-}
-
-.form-control{
-    height:50px;
-}
-
-.input-group-text{
-    background:#f8f9fa;
-}
-
-</style>
-
-<script>
-
-function togglePassword() {
-
-    const password =
-        document.getElementById("password");
-
-    const eye =
-        document.getElementById("eyeIcon");
-
-    if (password.type === "password") {
-
-        password.type = "text";
-
-        eye.classList.remove("bi-eye");
-        eye.classList.add("bi-eye-slash");
-
-    }
-    else {
-
-        password.type = "password";
-
-        eye.classList.remove("bi-eye-slash");
-        eye.classList.add("bi-eye");
-    }
-}
-
-</script>
+    </script>
 
 </body>
 
