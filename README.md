@@ -1,51 +1,370 @@
-# Employee Management System
+# Employee Management System (EMS)
 
-A simple ASP.NET Core MVC application for managing employees, departments, users and roles with audit logging. It provides CRUD for employees and departments, user authentication/management, role-based authorization, and EF Core migrations for database schema management.
+A modern **Employee Management System** built using **ASP.NET Core MVC**, **C#**, **Entity Framework Core**, and **SQL Server**.  
+This system helps organizations manage employees, departments, users, roles, and audit logs through a secure role-based dashboard.
 
-## Stack
-- Language(s): C# (server-side), Razor/HTML/CSS (views)
-- Framework / runtime: ASP.NET Core MVC (Razor views)
-- Notable libraries: Entity Framework Core (migrations & DbContext), ASP.NET Core MVC, simple custom authorization attributes (Filters)
+---
+
+## Project Overview
+
+The Employee Management System (EMS) is designed to simplify employee data management and administrative operations within an organization.
+
+It provides:
+
+- Secure login and session management
+- Role-based access control
+- Employee management
+- Department management
+- User and role management
+- Audit trail tracking
+- Analytics dashboard
+- Export reports (Excel/PDF)
+
+The application follows a clean MVC architecture and includes a modern SaaS-style UI.
+
+---
+
+## Tech Stack
+
+### Backend
+- ASP.NET Core MVC
+- C#
+- Entity Framework Core
+- SQL Server
+
+### Frontend
+- HTML
+- CSS
+- Bootstrap 5
+- JavaScript
+- jQuery
+- Chart.js
+
+### Tools
+- Visual Studio Code
+- Git
+- GitHub
+- SQL Server Management Studio (SSMS)
+
+---
 
 ## Features
-- Employee CRUD (create, read, update, delete) with an "IsActive" flag
-- Department CRUD
-- User and Role management (basic users, roles, login/password flows)
-- Audit logging for important operations
-- Entity Framework Core migrations included to create and update the database schema
-- Razor-based Views served from Views/
 
-## Repository layout
-Top-level entries:
-- EmployeeManagement.csproj — project file
-- Program.cs — application entrypoint / host configuration
-- appsettings.json — configuration (connection strings, logging, etc.)
-- Controllers/ — MVC controllers (AccountController, EmployeeController, DepartmentController, RoleController, UserController, AuditController, HomeController, ErrorController)
-- Data/ — EF Core DbContext (EmployeeDbContext.cs)
-- Models/ — domain models and view models (Employee, Department, User, Role, AuditLog, ViewModels)
-  - Models/ViewModels/ — view-specific models (UserViewModel, ChangePasswordViewModel, etc.)
-- Filters/ — custom authorization/session filters (RoleAuthorizeAttribute, SessionAuthorizeAttribute)
-- Migrations/ — EF Core migration files and model snapshot
-- Views/ — Razor views (organized by controller: Account, Employee, Department, Role, User, Audit, Home, Shared, Error)
-- wwwroot/ — static assets (css/, js/, lib/, favicon.ico)
-- Properties/ — assembly / launch settings (if any)
-- .gitignore
+# Authentication & Security
+- Login / Logout
+- Session-based authentication
+- Role-based authorization
+- Change password
+- Reset password
+- Active / Inactive users
+- Protected routes using custom filters
 
-How it fits together:
-- Program.cs configures the web host, services and middleware.
-- EmployeeDbContext (Data/) is registered and used by controllers and EF Core migrations to read/write data.
-- Controllers handle HTTP requests, use models and DbContext, and return Razor views located in Views/.
-- Filters enforce session and role-based access for controller actions.
-- Migrations contain the database schema history and can be applied to initialize/update the database.
+---
 
-## Getting started (shortest path)
-Prerequisites:
-- .NET 6.0 or later SDK installed (use the version your project targets — check EmployeeManagement.csproj)
-- A database server (SQL Server / LocalDB is commonly used with ASP.NET Core; update connection string if using another provider)
-- (Optional) dotnet-ef tool for applying migrations: `dotnet tool install --global dotnet-ef`
+# Dashboard
+Interactive dashboard showing:
 
-Steps:
-1. Clone the repository
-   ```bash
-   git clone https://github.com/Cshekhar004/EmployeeManagementSystem.git
-   cd EmployeeManagementSystem
+- Total Employees
+- Total Departments
+- Male Employees
+- Female Employees
+- Highest Salary
+- Lowest Salary
+- Average Salary
+- Employees Added This Month
+
+Charts included:
+- Employees by Department (Bar Chart)
+- Gender Distribution (Doughnut Chart)
+
+---
+
+# Employee Management
+Manage employee records with full CRUD operations.
+
+Features:
+- Create employee
+- View employee details
+- Edit employee
+- Search employee
+- Filter by gender
+- Export to Excel
+- Export to PDF
+- Active / Inactive employee
+- Department assignment
+
+Employee details include:
+- Employee Code
+- Employee Name
+- Department
+- Gender
+- Date of Birth
+- Salary
+- Created Date
+
+---
+
+# Department Management
+Manage organization departments.
+
+Features:
+- Create department
+- View department details
+- Edit department
+- Delete department
+- Department-wise employee count
+
+---
+
+# User Management
+Admin can manage system users.
+
+Features:
+- Create user
+- View user details
+- Edit user
+- Reset password
+- Activate / Deactivate user
+- Role assignment
+
+User roles include:
+- Admin
+- HR
+- Manager
+- User
+
+---
+
+# Role Management
+Manage access roles.
+
+Features:
+- Create role
+- View role
+- Edit role
+- Delete role
+- Assign role permissions
+
+---
+
+# Audit Trail
+Tracks important system actions.
+
+Logs include:
+- Module name
+- Action performed
+- Record info
+- Performed by
+- Date and time
+
+Examples:
+- Employee Created
+- Employee Updated
+- User Activated
+- Password Reset
+- Role Updated
+
+---
+
+# UI/UX Features
+- Modern SaaS dashboard design
+- Responsive layout
+- Sidebar navigation
+- Bootstrap modals
+- Toast notifications
+- Professional cards & tables
+- Enhanced pagination
+- Interactive charts
+
+---
+
+## Role-Based Access Control
+
+### Admin
+Access to:
+- Dashboard
+- Employees
+- Departments
+- Users
+- Roles
+- Audit Trail
+- Settings
+
+### HR
+Access to:
+- Dashboard
+- Employees
+- Departments
+
+### Manager
+Access to:
+- Dashboard
+- Employees (View)
+
+### User
+Limited access
+
+---
+
+## Project Structure
+
+```bash
+EmployeeManagementSystem/
+│
+├── Controllers/
+│   ├── AccountController.cs
+│   ├── HomeController.cs
+│   ├── EmployeeController.cs
+│   ├── DepartmentController.cs
+│   ├── UserController.cs
+│   ├── RoleController.cs
+│   └── AuditController.cs
+│
+├── Models/
+│   ├── Employee.cs
+│   ├── Department.cs
+│   ├── User.cs
+│   ├── Role.cs
+│   ├── AuditLog.cs
+│   └── DashboardViewModel.cs
+│
+├── Views/
+│   ├── Account/
+│   ├── Home/
+│   ├── Employee/
+│   ├── Department/
+│   ├── User/
+│   ├── Role/
+│   └── Audit/
+│
+├── Data/
+│   └── EmployeeDbContext.cs
+│
+├── Filters/
+│   ├── SessionAuthorizeAttribute.cs
+│   └── RoleAuthorizeAttribute.cs
+│
+└── wwwroot/
+    ├── css/
+    ├── js/
+    └── lib/
+```
+
+---
+
+## Database Tables
+
+Main tables:
+
+- Employees
+- Departments
+- Users
+- Roles
+- AuditLogs
+
+---
+
+## Installation Guide
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/Cshekhar004/EmployeeManagementSystem.git
+```
+
+### 2. Navigate to Project
+```bash
+cd EmployeeManagementSystem
+```
+
+### 3. Restore Packages
+```bash
+dotnet restore
+```
+
+### 4. Configure Database
+Update connection string in:
+
+```json
+appsettings.json
+```
+
+Example:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=.;Database=EmployeeManagementDB;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+```
+
+### 5. Run Project
+```bash
+dotnet build
+dotnet run
+```
+
+---
+
+## Future Enhancements
+Possible improvements:
+
+- Password hashing
+- Email notifications
+- Reports module
+- Dark mode
+- Cloud deployment
+- Profile management
+- Advanced analytics
+
+---
+
+## Screenshots
+Add screenshots here after uploading them to GitHub.
+
+Example:
+
+- Login Page
+  <img width="1536" height="1024" alt="ChatGPT Image Jun 27, 2026, 03_20_44 PM" src="https://github.com/user-attachments/assets/52d9d8ec-05ce-4722-88f3-899fe1c84525" />
+
+- Dashboard
+  <img width="1901" height="927" alt="Screenshot 2026-06-27 145455" src="https://github.com/user-attachments/assets/2a91d879-5775-4cf9-ada3-003579752216" />
+
+- Employee List
+  <img width="1918" height="928" alt="Screenshot 2026-06-27 145518" src="https://github.com/user-attachments/assets/9419edd7-cc9e-4e60-ae1e-579dd1f279ba" />
+
+- User Management
+  <img width="1918" height="927" alt="Screenshot 2026-06-27 145645" src="https://github.com/user-attachments/assets/fcbc3a7b-ef51-4f33-9069-a5d7479bc976" />
+
+- Audit Trail
+  <img width="1918" height="927" alt="image" src="https://github.com/user-attachments/assets/bf5841eb-3921-4296-ab1e-5bce72e619dc" />
+
+
+---
+
+## Learning Outcomes
+Through this project I learned:
+
+- ASP.NET Core MVC architecture
+- Entity Framework Core
+- SQL Server integration
+- Authentication & Authorization
+- Role-based security
+- CRUD operations
+- Dashboard analytics
+- Git & GitHub workflow
+- UI/UX design improvements
+
+---
+
+## Author
+
+**Chandrashekhar Sahu**  
+B.Tech Computer Engineering  
+ASP.NET Core / C# Developer
+
+GitHub:  
+https://github.com/Cshekhar004
+
+---
+
+## License
+This project is for educational and portfolio purposes.
