@@ -1,7 +1,11 @@
 ﻿@model EmployeeManagement.Models.DashboardViewModel
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Dashboard";
+
+    bool mustChangePassword =
+        Context.Session.GetString("MustChangePassword") == "True";
 }
 
 <div class="container-fluid mt-4 mb-4">
@@ -302,6 +306,129 @@
 
 </div>
 
+@if (mustChangePassword)
+{
+    <div class="position-fixed bottom-0 end-0 p-3"
+         style="z-index: 1055;">
+
+        <div class="card shadow-lg border-0"
+             style="width: 360px; border-radius: 16px;">
+
+            <div class="card-header bg-warning text-dark fw-bold">
+
+                <i class="bi bi-exclamation-triangle"></i>
+                Password Reset Notice
+
+            </div>
+
+            <div class="card-body">
+
+                <p class="mb-3">
+                    Your password was reset by admin.
+                    Do you want to change your password now?
+                </p>
+
+                <button type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="openForcePasswordModal()">
+
+                    <i class="bi bi-check-circle"></i>
+                    Yes
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        onclick="dismissPasswordPrompt(this)">
+
+                    <i class="bi bi-x-circle"></i>
+                    No
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<div class="modal fade"
+     id="forcePasswordModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+                    <i class="bi bi-key"></i>
+                    Change Password
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-controller="Account"
+                  asp-action="ForceChangePassword"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label>New Password</label>
+
+                        <input name="NewPassword"
+                               type="password"
+                               class="form-control"
+                               required
+                               minlength="6" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Confirm Password</label>
+
+                        <input name="ConfirmPassword"
+                               type="password"
+                               class="form-control"
+                               required
+                               minlength="6" />
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i>
+                        Save Password
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 @section Scripts
 {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -453,6 +580,23 @@
                     }
                 }
             });
+
+            function dismissPasswordPrompt(button) {
+                const popup =
+                    button.closest(".position-fixed");
+
+                if (popup) {
+                    popup.remove();
+                }
+            }
+
+            function openForcePasswordModal() {
+                var modal =
+                    new bootstrap.Modal(
+                        document.getElementById("forcePasswordModal"));
+
+                modal.show();
+            }
 
     </script>
 }

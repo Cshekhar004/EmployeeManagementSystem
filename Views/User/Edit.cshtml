@@ -18,7 +18,9 @@
 
         <div class="card-body">
 
-            <form id="editUserForm"asp-action="Edit"method="post">
+            <form id="editUserForm"
+                asp-action="Edit"
+                method="post">
 
                 <input asp-for="UserId" type="hidden" />
 
@@ -40,6 +42,45 @@
                     <input asp-for="Email"
                            class="form-control" />
                 </div>
+
+                <div class="mb-3">
+                <label>
+                    <i class="bi bi-shield-lock"></i>
+                    Aadhaar Card Number
+                </label>
+
+                <input asp-for="AadharCardNumber"
+                    class="form-control"
+                    maxlength="12"
+                    placeholder="Leave blank to keep existing Aadhaar" />
+
+                <span asp-validation-for="AadharCardNumber"
+                    class="text-danger"></span>
+
+                <small class="text-muted">
+                    Leave blank if you do not want to change Aadhaar.
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label>
+                    <i class="bi bi-person-vcard"></i>
+                    PAN Card Number
+                </label>
+
+                <input asp-for="PanCardNumber"
+                    class="form-control"
+                    maxlength="10"
+                    oninput="this.value = this.value.toUpperCase()"
+                    placeholder="Leave blank to keep existing PAN" />
+
+                <span asp-validation-for="PanCardNumber"
+                    class="text-danger"></span>
+
+                <small class="text-muted">
+                    Leave blank if you do not want to change PAN.
+                </small>
+            </div>
 
                 <div class="mb-3">
                     <label>Role</label>

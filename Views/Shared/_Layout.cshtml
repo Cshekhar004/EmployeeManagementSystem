@@ -182,24 +182,24 @@
 
                     <div>
 
-                        <a asp-controller="Account"
-                            asp-action="Logout"
-                            class="btn btn-outline-danger">
+                        <button type="button"
+                                class="btn btn-outline-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#logoutModal">
 
-                                <i class="bi bi-box-arrow-right"></i>
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
 
-                                Logout
+                        </button>
 
-                        </a>
+                        <button type="button"
+                                class="btn btn-outline-primary btn-sm"
+                                onclick="openChangePasswordModal()">
 
-                        <a class="btn btn-outline-primary btn-sm"
-                            asp-controller="Account"
-                            asp-action="ChangePassword">
+                            <i class="bi bi-key"></i>
+                            Change Password
 
-                                <i class="bi bi-key"></i>
-                                Change Password
-
-                        </a>
+                        </button>
 
                     </div>
 
@@ -461,6 +461,112 @@
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <div class="modal fade"
+        id="logoutModal"
+        tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header bg-danger text-white">
+
+                    <h5 class="modal-title">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Confirm Logout
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="mb-0">
+                        Are you sure you want to logout?
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="bi bi-x-circle"></i>
+                        No, Cancel
+
+                    </button>
+
+                    <a asp-controller="Account"
+                    asp-action="Logout"
+                    class="btn btn-danger">
+
+                        <i class="bi bi-check-circle"></i>
+                        Yes, Logout
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade"
+        id="changePasswordModal"
+        tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header bg-primary text-white">
+
+                    <h5 class="modal-title">
+                        <i class="bi bi-key"></i>
+                        Change Password
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body"
+                    id="changePasswordModalBody">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        function openChangePasswordModal() {
+            fetch('/Account/ChangePassword')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("changePasswordModalBody")
+                        .innerHTML = html;
+
+                    var modal =
+                        new bootstrap.Modal(
+                            document.getElementById("changePasswordModal"));
+
+                    modal.show();
+                });
+        }
+    </script>
 
 </body>
 

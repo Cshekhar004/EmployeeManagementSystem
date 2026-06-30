@@ -92,6 +92,8 @@
                             <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="name" asp-route-searchString="@ViewData["CurrentFilter"]">Name</a></th>
                             <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="username" asp-route-searchString="@ViewData["CurrentFilter"]">Username</a></th>
                             <th>Email</th>
+                            <th>Aadhaar</th>
+                            <th>PAN</th>
                             <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="role" asp-route-searchString="@ViewData["CurrentFilter"]">Role</a></th>
                             <th>Status</th>
                             <th><a class="text-white text-decoration-none" asp-action="Index" asp-route-sortOrder="created" asp-route-searchString="@ViewData["CurrentFilter"]">Created Date</a></th>
@@ -110,6 +112,37 @@
                                     <td>@user.Name</td>
                                     <td>@user.Username</td>
                                     <td>@user.Email</td>
+
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(user.AadharLast4))
+                                        {
+                                            <span class="badge bg-secondary">
+                                                XXXX-XXXX-@user.AadharLast4
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Not Added
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(user.PanMasked))
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @user.PanMasked
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Not Added
+                                            </span>
+                                        }
+                                    </td>
+
                                     <td>@user.Role</td>
 
                                     <td>
@@ -182,7 +215,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="8"
+                                <td colspan="10"
                                     class="text-center text-muted py-4">
 
                                     No users found.

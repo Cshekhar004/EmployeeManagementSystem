@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Models;
 using EmployeeManagement.Models.ViewModels;
+using EmployeeManagement.Helpers;
 
 namespace EmployeeManagement.Controllers
 {
@@ -13,9 +14,14 @@ namespace EmployeeManagement.Controllers
     {
         private readonly EmployeeDbContext _context;
 
-        public UserController(EmployeeDbContext context)
+        private readonly IConfiguration _configuration;
+
+        public UserController(
+            EmployeeDbContext context,
+            IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         private void LogUserAudit(
@@ -175,11 +181,34 @@ namespace EmployeeManagement.Controllers
                     Name = model.Name,
                     Username = model.Username,
                     Email = model.Email,
-                    Password = model.Password,
+                    Password = PasswordHelper.HashPassword(model.Password),
                     Role = model.Role,
                     IsActive = model.IsActive,
                     CreatedDate = DateTime.Now,
-                    IsDeleted = false
+                    IsDeleted = false,
+
+                    AadharCardNumberHash =
+                        string.IsNullOrWhiteSpace(model.AadharCardNumber)
+                            ? null
+                            : PasswordHelper.HashPassword(model.AadharCardNumber),
+
+                    AadharLast4 =
+                        string.IsNullOrWhiteSpace(model.AadharCardNumber)
+                            ? null
+                            : model.AadharCardNumber.Substring(
+                                model.AadharCardNumber.Length - 4),
+
+                    PanCardNumberHash =
+                        string.IsNullOrWhiteSpace(model.PanCardNumber)
+                            ? null
+                            : PasswordHelper.HashPassword(
+                                model.PanCardNumber.ToUpper()),
+
+                    PanMasked =
+                        string.IsNullOrWhiteSpace(model.PanCardNumber)
+                            ? null
+                            : "XXXXX" +
+                            model.PanCardNumber.ToUpper().Substring(5)
                 };
 
                 _context.Users.Add(user);
@@ -187,6 +216,14 @@ namespace EmployeeManagement.Controllers
                 LogUserAudit(
                     "Created",
                     user.Username);
+
+                if (!string.IsNullOrWhiteSpace(model.AadharCardNumber) ||
+                    !string.IsNullOrWhiteSpace(model.PanCardNumber))
+                {
+                    LogUserAudit(
+                        "Created With Identity Details",
+                        $"{user.Username} - Aadhaar/PAN added safely");
+                }
 
                 await _context.SaveChangesAsync();
 
@@ -266,6 +303,42 @@ namespace EmployeeManagement.Controllers
                 user.Email = model.Email;
                 user.Role = model.Role;
                 user.IsActive = model.IsActive;
+
+                bool identityUpdated = false;
+
+                if (!string.IsNullOrWhiteSpace(model.AadharCardNumber))
+                {
+                    user.AadharCardNumberHash =
+                        PasswordHelper.HashPassword(
+                            model.AadharCardNumber);
+
+                    user.AadharLast4 =
+                        model.AadharCardNumber.Substring(
+                            model.AadharCardNumber.Length - 4);
+
+                    identityUpdated = true;
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.PanCardNumber))
+                {
+                    string pan =
+                        model.PanCardNumber.ToUpper();
+
+                    user.PanCardNumberHash =
+                        PasswordHelper.HashPassword(pan);
+
+                    user.PanMasked =
+                        "XXXXX" + pan.Substring(5);
+
+                    identityUpdated = true;
+                }
+
+                if (identityUpdated)
+                {
+                    LogUserAudit(
+                        "Updated Identity Details",
+                        $"{user.Username} - Aadhaar/PAN updated safely");
+                }
 
                 LogUserAudit(
                     "Updated",
@@ -357,36 +430,38 @@ namespace EmployeeManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(
-            ResetPasswordViewModel model)
+        [ActionName("ResetPassword")]
+        public async Task<IActionResult> ResetPasswordConfirmed(int userId)
         {
-            if (ModelState.IsValid)
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u =>
+                    u.UserId == userId &&
+                    !u.IsDeleted);
+
+            if (user == null)
             {
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(u =>
-                        u.UserId == model.UserId &&
-                        !u.IsDeleted);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                user.Password = model.NewPassword;
-
-                LogUserAudit(
-                    "Password Reset",
-                    user.Username);
-
-                await _context.SaveChangesAsync();
-
-                TempData["SuccessMessage"] =
-                    "Password reset successfully.";
-
-                return RedirectToAction("Index");
+                return NotFound();
             }
 
-            return View(model);
+            string defaultPassword =
+                _configuration["SecuritySettings:DefaultResetPassword"]
+                ?? "User@123";
+
+            user.Password =
+                PasswordHelper.HashPassword(defaultPassword);
+
+            user.MustChangePassword = true;
+
+            LogUserAudit(
+                "Password Reset",
+                $"{user.Username} - password reset to default by admin");
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] =
+                "Password reset successfully.";
+
+            return RedirectToAction("Index");
         }
 
     }

@@ -26,6 +26,46 @@
 
             <p><strong>Email:</strong> @Model.Email</p>
 
+            <p>
+                <strong>
+                    <i class="bi bi-shield-lock"></i>
+                    Aadhaar:
+                </strong>
+
+                @if (!string.IsNullOrWhiteSpace(Model.AadharLast4))
+                {
+                    <span class="badge bg-secondary">
+                        XXXX-XXXX-@Model.AadharLast4
+                    </span>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        Not Added
+                    </span>
+                }
+            </p>
+
+            <p>
+                <strong>
+                    <i class="bi bi-person-vcard"></i>
+                    PAN:
+                </strong>
+
+                @if (!string.IsNullOrWhiteSpace(Model.PanMasked))
+                {
+                    <span class="badge bg-secondary">
+                        @Model.PanMasked
+                    </span>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        Not Added
+                    </span>
+                }
+            </p>
+
             <p><strong>Role:</strong> @Model.Role</p>
 
             <p>

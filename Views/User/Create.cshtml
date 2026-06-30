@@ -18,7 +18,9 @@
 
         <div class="card-body">
 
-            <form id="createUserForm"asp-action="Create"method="post">
+            <form id="createUserForm"
+                asp-action="Create"
+                method="post">
 
                 <div class="mb-3">
                     <label>Name</label>
@@ -36,6 +38,37 @@
                     <label>Email</label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        <i class="bi bi-shield-lock"></i>
+                        Aadhaar Card Number
+                    </label>
+
+                    <input asp-for="AadharCardNumber"
+                        class="form-control"
+                        maxlength="12"
+                        placeholder="Enter 12 digit Aadhaar number" />
+
+                    <span asp-validation-for="AadharCardNumber"
+                        class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label>
+                        <i class="bi bi-person-vcard"></i>
+                        PAN Card Number
+                    </label>
+
+                    <input asp-for="PanCardNumber"
+                        class="form-control"
+                        maxlength="10"
+                        oninput="this.value = this.value.toUpperCase()"
+                        placeholder="Example: ABCDE1234F" />
+
+                    <span asp-validation-for="PanCardNumber"
+                        class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">

@@ -3,6 +3,7 @@ using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Models.ViewModels;
+using EmployeeManagement.Helpers;
 
 namespace EmployeeManagement.Controllers
 {
@@ -53,8 +54,26 @@ namespace EmployeeManagement.Controllers
                     Console.WriteLine("User not found.");
                 }
 
+                bool passwordValid = false;
+
+                if (user != null)
+                {
+                    if (PasswordHelper.LooksHashed(user.Password))
+                    {
+                        passwordValid =
+                            PasswordHelper.VerifyPassword(
+                                model.Password,
+                                user.Password);
+                    }
+                    else
+                    {
+                        passwordValid =
+                            user.Password == model.Password;
+                    }
+                }
+
                 if (user != null &&
-                    user.Password == model.Password &&
+                    passwordValid &&
                     user.IsActive)
                 {
                     HttpContext.Session.SetString(
@@ -68,6 +87,10 @@ namespace EmployeeManagement.Controllers
                     HttpContext.Session.SetInt32(
                         "UserId",
                         user.UserId);
+
+                    HttpContext.Session.SetString(
+                        "MustChangePassword",
+                        user.MustChangePassword.ToString());
 
                     TempData["SuccessMessage"] =
                         "Login successful.";
@@ -112,7 +135,8 @@ namespace EmployeeManagement.Controllers
                     return View(model);
                 }
 
-                user.Password = model.NewPassword;
+                user.Password =
+                    PasswordHelper.HashPassword(model.NewPassword);
 
                 await _context.SaveChangesAsync();
 
@@ -163,7 +187,22 @@ namespace EmployeeManagement.Controllers
                     return RedirectToAction("Login");
                 }
 
-                if (user.Password != model.CurrentPassword)
+                bool currentPasswordValid = false;
+
+                if (PasswordHelper.LooksHashed(user.Password))
+                {
+                    currentPasswordValid =
+                        PasswordHelper.VerifyPassword(
+                            model.CurrentPassword,
+                            user.Password);
+                }
+                else
+                {
+                    currentPasswordValid =
+                        user.Password == model.CurrentPassword;
+                }
+
+                if (!currentPasswordValid)
                 {
                     ModelState.AddModelError(
                         "CurrentPassword",
@@ -172,7 +211,8 @@ namespace EmployeeManagement.Controllers
                     return View(model);
                 }
 
-                user.Password = model.NewPassword;
+                user.Password =
+                    PasswordHelper.HashPassword(model.NewPassword);
 
                 await _context.SaveChangesAsync();
 
@@ -183,6 +223,85 @@ namespace EmployeeManagement.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForceChangePassword(
+            ForceChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] =
+                    "Please enter valid password details.";
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            int? userId =
+                HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                TempData["ErrorMessage"] =
+                    "Session expired. Please login again.";
+
+                return RedirectToAction("Login");
+            }
+
+            var user =
+                await _context.Users
+                .FirstOrDefaultAsync(u =>
+                    u.UserId == userId &&
+                    !u.IsDeleted);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] =
+                    "User not found.";
+
+                return RedirectToAction("Login");
+            }
+
+            user.Password =
+                PasswordHelper.HashPassword(
+                    model.NewPassword);
+
+            user.MustChangePassword = false;
+
+            HttpContext.Session.SetString(
+                "MustChangePassword",
+                "False");
+
+            var audit = new AuditLog
+            {
+                Username =
+                    HttpContext.Session.GetString("Username")
+                    ?? "Unknown",
+
+                Action =
+                    "User Changed Password After Admin Reset",
+
+                Module = "User",
+
+                RecordInfo =
+                    user.Username,
+
+                PerformedBy =
+                    HttpContext.Session.GetString("Username")
+                    ?? "Unknown",
+
+                ActionDate = DateTime.Now
+            };
+
+            _context.AuditLogs.Add(audit);
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] =
+                "Password changed successfully.";
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Logout()
