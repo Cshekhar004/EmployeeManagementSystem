@@ -30,6 +30,7 @@ namespace EmployeeManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                Console.WriteLine("RememberMe value: " + model.RememberMe);
                 var users = await _context.Users.ToListAsync();
 
                 Console.WriteLine(
@@ -91,6 +92,31 @@ namespace EmployeeManagement.Controllers
                     HttpContext.Session.SetString(
                         "MustChangePassword",
                         user.MustChangePassword.ToString());
+
+                    if (model.RememberMe)
+                    {
+                        string rememberToken =
+                            RememberMeHelper.GenerateToken();
+
+                        user.RememberTokenHash =
+                            RememberMeHelper.HashToken(rememberToken);
+
+                        user.RememberTokenExpiry =
+                            DateTime.Now.AddDays(30);
+
+                        Response.Cookies.Append(
+                            "EMS_RememberMe",
+                            rememberToken,
+                            new CookieOptions
+                            {
+                                Expires = DateTime.Now.AddDays(30),
+                                HttpOnly = true,
+                                Secure = false,
+                                SameSite = SameSiteMode.Strict
+                            });
+
+                        await _context.SaveChangesAsync();
+                    }
 
                     TempData["SuccessMessage"] =
                         "Login successful.";

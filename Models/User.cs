@@ -47,6 +47,11 @@ namespace EmployeeManagement.Models
         public string? PanMasked { get; set; }
 
         public bool MustChangePassword { get; set; } = false;
+
+        [StringLength(256)]
+        public string? RememberTokenHash { get; set; }
+
+        public DateTime? RememberTokenExpiry { get; set; }
         
     }
 }
