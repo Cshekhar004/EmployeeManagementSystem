@@ -221,35 +221,34 @@
                                     </button>
                                 }
 
-                                <form asp-action="ToggleStatus"
-                                    asp-route-id="@employee.EmployeeId"
-                                    method="post"
-                                    style="display:inline;">
+                                @if (employee.IsActive)
+                                {
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="openEmployeeStatusModal(
+                                                '@employee.EmployeeId',
+                                                '@employee.EmployeeName',
+                                                'inactivate')">
 
-                                    @Html.AntiForgeryToken()
+                                        <i class="bi bi-person-x"></i>
+                                        Inactivate
 
-                                    @if (employee.IsActive)
-                                    {
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm">
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-success btn-sm"
+                                            onclick="openEmployeeStatusModal(
+                                                '@employee.EmployeeId',
+                                                '@employee.EmployeeName',
+                                                'activate')">
 
-                                            <i class="bi bi-person-x"></i>
-                                            Inactivate
+                                        <i class="bi bi-person-check"></i>
+                                        Activate
 
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <button type="submit"
-                                                class="btn btn-success btn-sm">
-
-                                            <i class="bi bi-person-check"></i>
-                                            Activate
-
-                                        </button>
-                                    }
-
-                                </form>
+                                    </button>
+                                }
 
                             </td>
                         </tr>
@@ -345,6 +344,99 @@
 
 </div>
 
+<div class="modal fade"
+     id="employeeStatusModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header bg-warning text-dark">
+
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Confirm Employee Status
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-action="ToggleStatus"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="id"
+                           id="statusEmployeeId" />
+
+                    <input type="hidden"
+                           name="page"
+                           value="@ViewBag.CurrentPage" />
+
+                    <input type="hidden"
+                           name="searchString"
+                           value="@ViewData["CurrentFilter"]" />
+
+                    <input type="hidden"
+                           name="genderFilter"
+                           value="@ViewBag.GenderFilter" />
+
+                    <input type="hidden"
+                           name="departmentFilter"
+                           value="@ViewBag.DepartmentFilter" />
+
+                    <input type="hidden"
+                           name="monthFilter"
+                           value="@ViewBag.MonthFilter" />
+
+                    <input type="hidden"
+                           name="weekFilter"
+                           value="@ViewBag.WeekFilter" />
+
+                    <p class="mb-0"
+                       id="employeeStatusMessage">
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="bi bi-x-circle"></i>
+                        No, Cancel
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="employeeStatusConfirmButton">
+
+                        <i class="bi bi-check-circle"></i>
+                        Yes, Continue
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
@@ -398,6 +490,12 @@
             {
                 e.preventDefault();
 
+                const submitButton =
+                    $(this).find("button[type='submit']");
+
+                submitButton.prop("disabled", true);
+                submitButton.text("Saving...");
+
                 $.ajax({
                     url: '/Employee/Create',
                     type: 'POST',
@@ -407,22 +505,23 @@
                     {
                         if (response.success)
                         {
-                            showToast("Employee created successfully.");
-
-                            setTimeout(function ()
-                            {
-                                location.reload();
-                            }, 1000);
+                            window.location.href = "/Employee/Index";
                         }
                         else
                         {
                             $("#employeeModalContent")
                                 .html(response);
+
+                            submitButton.prop("disabled", false);
+                            submitButton.text("Save Employee");
                         }
                     },
 
                     error: function ()
                     {
+                        submitButton.prop("disabled", false);
+                        submitButton.text("Save Employee");
+
                         alert("Create failed.");
                     }
                 });
@@ -455,12 +554,7 @@
                     {
                         if (response.success)
                         {
-                            showToast("Employee updated successfully.");
-
-                            setTimeout(function ()
-                            {
-                                location.reload();
-                            }, 1000);
+                            window.location.href = "/Employee/Index";
                         }
                         else
                         {
@@ -520,6 +614,36 @@
                     }
                 });
             });
+
+            function openEmployeeStatusModal(employeeId, employeeName, actionType)
+            {
+                document.getElementById("statusEmployeeId")
+                    .value = employeeId;
+
+                document.getElementById("employeeStatusMessage")
+                    .innerText =
+                        "Are you sure you want to " +
+                        actionType +
+                        " employee '" +
+                        employeeName +
+                        "'?";
+
+                const confirmButton =
+                    document.getElementById("employeeStatusConfirmButton");
+
+                if (actionType === "inactivate") {
+                    confirmButton.className = "btn btn-danger";
+                }
+                else {
+                    confirmButton.className = "btn btn-success";
+                }
+
+                var modal =
+                    new bootstrap.Modal(
+                        document.getElementById("employeeStatusModal"));
+
+                modal.show();
+            }
 
     </script>
 }

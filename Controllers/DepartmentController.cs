@@ -66,6 +66,9 @@ namespace EmployeeManagement.Controllers
 
                 _context.SaveChanges();
 
+                TempData["SuccessMessage"] =
+                    "Department created successfully.";
+
                 return Json(new
                 {
                     success = true
@@ -138,6 +141,9 @@ namespace EmployeeManagement.Controllers
 
                 _context.SaveChanges();
 
+                TempData["SuccessMessage"] =
+                    "Department updated successfully.";
+
                 return Json(new
                 {
                     success = true
@@ -167,6 +173,7 @@ namespace EmployeeManagement.Controllers
 
         [RoleAuthorize("Admin")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteDepartment(int departmentId)
         {
             var department =
@@ -174,9 +181,27 @@ namespace EmployeeManagement.Controllers
 
             if (department == null)
             {
+                TempData["ErrorMessage"] =
+                    "Department not found.";
+
                 return Json(new
                 {
-                    success = false
+                    success = true
+                });
+            }
+
+            bool hasEmployees =
+                _context.Employees
+                .Any(e => e.DepartmentId == departmentId);
+
+            if (hasEmployees)
+            {
+                TempData["ErrorMessage"] =
+                    "Cannot delete department because employees are assigned to it.";
+
+                return Json(new
+                {
+                    success = true
                 });
             }
 
@@ -204,6 +229,9 @@ namespace EmployeeManagement.Controllers
             _context.AuditLogs.Add(audit);
 
             _context.SaveChanges();
+
+            TempData["SuccessMessage"] =
+                "Department deleted successfully.";
 
             return Json(new
             {

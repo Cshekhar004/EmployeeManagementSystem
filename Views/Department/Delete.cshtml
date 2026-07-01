@@ -1,6 +1,9 @@
 @model EmployeeManagement.Models.Department
 
-<form id="deleteDepartmentForm">
+<form id="deleteDepartmentForm"
+      method="post">
+
+    @Html.AntiForgeryToken()
 
     <input type="hidden"
            name="departmentId"

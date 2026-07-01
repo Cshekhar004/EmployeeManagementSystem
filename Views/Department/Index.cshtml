@@ -194,23 +194,7 @@
                         {
                             if(result.success)
                             {
-                                var modalElement =
-                                    document.getElementById(
-                                        "departmentModal");
-
-                                var modal =
-                                    bootstrap.Modal.getInstance(
-                                        modalElement);
-
-                                modal.hide();
-
-                                showDepartmentToast(
-                                    "Department created successfully");
-
-                                setTimeout(() =>
-                                {
-                                    location.reload();
-                                }, 800);
+                                window.location.href = "/Department/Index";
                             }
                             else
                             {
@@ -242,23 +226,7 @@
                         {
                             if(result.success)
                             {
-                                var modalElement =
-                                    document.getElementById(
-                                        "departmentModal");
-
-                                var modal =
-                                    bootstrap.Modal.getInstance(
-                                        modalElement);
-
-                                modal.hide();
-
-                                showDepartmentToast(
-                                    "Department updated successfully");
-
-                                setTimeout(() =>
-                                {
-                                    location.reload();
-                                }, 800);
+                                window.location.href = "/Department/Index";
                             }
                             else
                             {
@@ -290,23 +258,7 @@
                         {
                             if(result.success)
                             {
-                                var modalElement =
-                                    document.getElementById(
-                                        "departmentModal");
-
-                                var modal =
-                                    bootstrap.Modal.getInstance(
-                                        modalElement);
-
-                                modal.hide();
-
-                                showDepartmentToast(
-                                    "Department deleted successfully");
-
-                                setTimeout(() =>
-                                {
-                                    location.reload();
-                                }, 800);
+                                window.location.href = "/Department/Index";
                             }
                             else
                             {

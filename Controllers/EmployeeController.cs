@@ -173,9 +173,12 @@ namespace EmployeeManagement.Controllers
         public async Task<IActionResult> Create(Employee employee)
         {
             if (ModelState.IsValid)
-            {
-                _context.Employees.Add(employee);
+{
+                employee.CreatedDate = DateTime.Now;
 
+                employee.IsActive = true;
+
+                _context.Employees.Add(employee);
                 var audit = new AuditLog
                 {
                     Username =
@@ -196,6 +199,9 @@ namespace EmployeeManagement.Controllers
                 _context.AuditLogs.Add(audit);
 
                 await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] =
+                    "Employee created successfully.";
 
                 return Json(new
                 {
@@ -289,6 +295,9 @@ namespace EmployeeManagement.Controllers
                     _context.AuditLogs.Add(audit);
 
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] =
+                        "Employee updated successfully.";
 
                     return Json(new
                     {
@@ -511,7 +520,14 @@ namespace EmployeeManagement.Controllers
         [RoleAuthorize("Admin", "HR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ToggleStatus(int id)
+        public async Task<IActionResult> ToggleStatus(
+            int id,
+            int page = 1,
+            string? searchString = null,
+            string? genderFilter = null,
+            string? departmentFilter = null,
+            string? monthFilter = null,
+            string? weekFilter = null)
         {
             var employee =
                 await _context.Employees
@@ -553,7 +569,15 @@ namespace EmployeeManagement.Controllers
                     ? "Employee activated successfully."
                     : "Employee deactivated successfully.";
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new
+            {
+                page,
+                searchString,
+                genderFilter,
+                departmentFilter,
+                monthFilter,
+                weekFilter
+            });
         }
 
         [RoleAuthorize("Admin")]
