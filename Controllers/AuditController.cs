@@ -17,9 +17,19 @@ namespace EmployeeManagement.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(
+            int page = 1,
+            int pageSize = 20)
         {
-            int pageSize = 20;
+            int[] allowedPageSizes =
+            {
+                10, 20, 50, 100
+            };
+
+            if (!allowedPageSizes.Contains(pageSize))
+            {
+                pageSize = 20;
+            }
 
             var query =
                 _context.AuditLogs
@@ -35,6 +45,7 @@ namespace EmployeeManagement.Controllers
                 .ToListAsync();
 
             ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
 
             ViewBag.TotalPages =
                 (int)Math.Ceiling(

@@ -34,12 +34,34 @@ namespace EmployeeManagement.Filters
 
             if (!_roles.Contains(role))
             {
-                context.Result =
-                    new RedirectToActionResult(
-                        "AccessDenied",
-                        "Account",
-                        null);
+                if (context.Controller is Controller controller)
+                {
+                    controller.TempData["ErrorMessage"] =
+                        "You do not have permission to access this feature.";
+                }
+
+                var referer =
+                    context.HttpContext.Request.Headers["Referer"]
+                    .ToString();
+
+                if (!string.IsNullOrEmpty(referer))
+                {
+                    context.Result =
+                        new RedirectResult(referer);
+                }
+                else
+                {
+                    context.Result =
+                        new RedirectToActionResult(
+                            "Index",
+                            "Home",
+                            null);
+                }
+
+                return;
             }
+
+            base.OnActionExecuting(context);
         }
     }
 }

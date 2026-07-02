@@ -221,6 +221,7 @@
                                     </button>
                                 }
 
+                                @if (role != "Manager" && role != "User")
                                 @if (employee.IsActive)
                                 {
                                     <button type="button"

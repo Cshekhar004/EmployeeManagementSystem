@@ -330,9 +330,30 @@ namespace EmployeeManagement.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            int? userId =
+                HttpContext.Session.GetInt32("UserId");
+
+            if (userId != null)
+            {
+                var user =
+                    await _context.Users
+                    .FirstOrDefaultAsync(u =>
+                        u.UserId == userId);
+
+                if (user != null)
+                {
+                    user.RememberTokenHash = null;
+                    user.RememberTokenExpiry = null;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+
             HttpContext.Session.Clear();
+
+            Response.Cookies.Delete("EMS_RememberMe");
 
             return RedirectToAction("Login");
         }

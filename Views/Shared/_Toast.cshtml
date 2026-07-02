@@ -1,6 +1,15 @@
-@if (TempData["Success"] != null)
+@{
+    var successMessage =
+        TempData["SuccessMessage"] ?? TempData["Success"];
+
+    var errorMessage =
+        TempData["ErrorMessage"] ?? TempData["Error"];
+}
+
+@if (successMessage != null)
 {
-    <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast-container position-fixed top-0 end-0 p-3"
+         style="z-index: 2000;">
 
         <div id="successToast"
              class="toast text-bg-success border-0"
@@ -9,9 +18,7 @@
             <div class="d-flex">
 
                 <div class="toast-body">
-
-                    @TempData["Success"]
-
+                    @successMessage
                 </div>
 
                 <button type="button"
@@ -26,9 +33,10 @@
     </div>
 }
 
-@if (TempData["Error"] != null)
+@if (errorMessage != null)
 {
-    <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast-container position-fixed top-0 end-0 p-3"
+         style="z-index: 2000;">
 
         <div id="errorToast"
              class="toast text-bg-danger border-0"
@@ -37,9 +45,7 @@
             <div class="d-flex">
 
                 <div class="toast-body">
-
-                    @TempData["Error"]
-
+                    @errorMessage
                 </div>
 
                 <button type="button"
