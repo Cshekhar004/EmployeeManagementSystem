@@ -1,68 +1,90 @@
 # Employee Management System (EMS)
 
-A modern **Employee Management System** built using **ASP.NET Core MVC**, **C#**, **Entity Framework Core**, and **SQL Server**.  
-This system helps organizations manage employees, departments, users, roles, and audit logs through a secure role-based dashboard.
+A modern enterprise-style **Employee Management System (EMS)** built using **ASP.NET Core MVC**, **C#**, **Entity Framework Core**, and **MySQL** with secure authentication, role-based authorization, audit logging, and interactive analytics dashboard.
 
 ---
 
-## Project Overview
+# Project Overview
 
-The Employee Management System (EMS) is designed to simplify employee data management and administrative operations within an organization.
+The Employee Management System (EMS) is designed to streamline employee and administrative operations inside an organization.
 
-It provides:
+This system enables secure management of:
 
-- Secure login and session management
-- Role-based access control
-- Employee management
-- Department management
-- User and role management
-- Audit trail tracking
-- Analytics dashboard
-- Export reports (Excel/PDF)
+- Employees
+- Departments
+- Users
+- Roles
+- Security Access
+- Audit Logs
+- Analytics Dashboard
 
-The application follows a clean MVC architecture and includes a modern SaaS-style UI.
+The project follows **ASP.NET Core MVC architecture** and provides a modern **SaaS-style responsive UI** using Bootstrap 5.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Backend
+## Backend
 - ASP.NET Core MVC
 - C#
 - Entity Framework Core
-- SQL Server
+- MySQL
 
-### Frontend
-- HTML
-- CSS
+## Frontend
+- HTML5
+- CSS3
 - Bootstrap 5
+- Bootstrap Icons
 - JavaScript
 - jQuery
+- AJAX
 - Chart.js
 
-### Tools
+## Tools
 - Visual Studio Code
 - Git
 - GitHub
-- SQL Server Management Studio (SSMS)
+- MySQL Workbench
 
 ---
 
-## Features
+# Core Features
+
+---
 
 # Authentication & Security
+
+Implemented enterprise-level authentication and security features.
+
+Features:
+
 - Login / Logout
 - Session-based authentication
+- Remember Me functionality
+- Password hashing (SHA-based helper)
 - Role-based authorization
-- Change password
-- Reset password
-- Active / Inactive users
-- Protected routes using custom filters
+- Change Password
+- Forgot Password
+- Admin Reset Password
+- Force password change after admin reset
+- Secure route protection using custom filters
+- Unauthorized access toast notification
+- Logout confirmation modal
+
+Security Enhancements:
+
+- Passwords are never stored as plain text
+- Aadhaar card numbers stored as hash
+- PAN card numbers stored as hash
+- Sensitive values masked in UI
+- Remember Me token stored securely
+- Token cleared on logout
 
 ---
 
 # Dashboard
-Interactive dashboard showing:
+
+Interactive analytics dashboard showing:
 
 - Total Employees
 - Total Departments
@@ -73,27 +95,35 @@ Interactive dashboard showing:
 - Average Salary
 - Employees Added This Month
 
-Charts included:
+Charts:
+
 - Employees by Department (Bar Chart)
 - Gender Distribution (Doughnut Chart)
 
 ---
 
 # Employee Management
-Manage employee records with full CRUD operations.
+
+Complete employee lifecycle management.
 
 Features:
-- Create employee
-- View employee details
-- Edit employee
-- Search employee
-- Filter by gender
+
+- Create Employee
+- View Employee Details
+- Edit Employee
+- Soft Delete Employee
+- Search Employees
+- Filter by Department
+- Filter by Month
+- Filter by Week
 - Export to Excel
 - Export to PDF
-- Active / Inactive employee
-- Department assignment
+- Pagination
+- Active / Inactive toggle
+- Confirmation modal for status change
 
-Employee details include:
+Employee Information:
+
 - Employee Code
 - Employee Name
 - Department
@@ -101,87 +131,149 @@ Employee details include:
 - Date of Birth
 - Salary
 - Created Date
+- Status
+
+Additional Improvements:
+
+- Pagination preserved during status toggle
+- Search/filter preserved during actions
+- Duplicate create prevention
+- Create/Edit redirect bug fixed
 
 ---
 
 # Department Management
-Manage organization departments.
+
+Manage organizational departments.
 
 Features:
-- Create department
-- View department details
-- Edit department
-- Delete department
-- Department-wise employee count
+
+- Create Department
+- View Department Details
+- Edit Department
+- Delete Department
+- Department-wise Employee Count
+- Pagination
+- Toast notifications
+
+Protection:
+
+- Department cannot be deleted if employees are assigned
+- Error toast shown on invalid delete
 
 ---
 
 # User Management
-Admin can manage system users.
+
+Admin-only secure user management.
 
 Features:
-- Create user
-- View user details
-- Edit user
-- Reset password
-- Activate / Deactivate user
-- Role assignment
 
-User roles include:
+- Create User
+- View User Details
+- Edit User
+- Activate / Deactivate User
+- Reset Password
+- Role Assignment
+- Aadhaar & PAN storage
+- Sensitive data masking
+
+User Fields:
+
+- Name
+- Username
+- Email
+- Role
+- Password (Hashed)
+- Aadhaar Number (Hashed)
+- PAN Number (Hashed)
+- Status
+
+Security:
+
+### Aadhaar
+Stored as:
+- Hash
+- Last 4 digits only for masking
+
+Example:
+```txt
+XXXX-XXXX-1234
+```
+
+### PAN
+Stored as:
+- Hash
+- Masked value
+
+Example:
+```txt
+XXXXX1234X
+```
+
+---
+
+# Password Management
+
+Advanced password handling system.
+
+Features:
+
+### Admin Reset Password
+- Confirmation modal before reset
+- Reset to configurable default password
+- Password stored as hash
+- Audit logged
+
+### Force Password Change
+After admin reset:
+
+```txt
+MustChangePassword = true
+```
+
+When user logs in:
+
+- Dashboard popup appears
+- Prompt to change password
+- User may change immediately or later
+
+After successful password change:
+
+```txt
+MustChangePassword = false
+```
+
+---
+
+# Role Management
+
+Manage system roles.
+
+Available Roles:
+
 - Admin
 - HR
 - Manager
 - User
 
----
-
-# Role Management
-Manage access roles.
-
 Features:
-- Create role
-- View role
-- Edit role
-- Delete role
-- Assign role permissions
+
+- Create Role
+- View Role
+- Edit Role
+- Delete Role
+- Assign Permissions
 
 ---
 
-# Audit Trail
-Tracks important system actions.
+# Role-Based Access Control (RBAC)
 
-Logs include:
-- Module name
-- Action performed
-- Record info
-- Performed by
-- Date and time
+Access rules:
 
-Examples:
-- Employee Created
-- Employee Updated
-- User Activated
-- Password Reset
-- Role Updated
+## Admin
+Full access:
 
----
-
-# UI/UX Features
-- Modern SaaS dashboard design
-- Responsive layout
-- Sidebar navigation
-- Bootstrap modals
-- Toast notifications
-- Professional cards & tables
-- Enhanced pagination
-- Interactive charts
-
----
-
-## Role-Based Access Control
-
-### Admin
-Access to:
 - Dashboard
 - Employees
 - Departments
@@ -190,23 +282,120 @@ Access to:
 - Audit Trail
 - Settings
 
-### HR
+---
+
+## HR
 Access to:
+
 - Dashboard
 - Employees
 - Departments
 
-### Manager
-Access to:
-- Dashboard
-- Employees (View)
-
-### User
-Limited access
+Restrictions:
+- Cannot access Users
+- Cannot access Roles
+- Cannot access Settings
 
 ---
 
-## Project Structure
+## Manager
+Access to:
+
+- Dashboard
+- Employees (View Only)
+
+Restrictions:
+- Create hidden
+- Edit hidden
+- Delete hidden
+- Status toggle hidden
+
+---
+
+## User
+Limited access.
+
+---
+
+# Audit Trail
+
+Tracks system actions for security and monitoring.
+
+Audit Fields:
+
+- Module
+- Action
+- Record Info
+- Performed By
+- Action Date
+
+Examples:
+
+- Employee Created
+- Employee Updated
+- Employee Activated
+- User Created
+- Password Reset
+- Department Deleted
+- User Changed Password
+- Role Updated
+
+Features:
+
+- Pagination
+- Page size filter
+- 10 / 20 / 50 / 100 records per page
+
+---
+
+# UI / UX Features
+
+Modern SaaS dashboard design.
+
+Features:
+
+- Responsive layout
+- Sidebar navigation
+- Professional cards
+- Data tables
+- Bootstrap modals
+- Toast notifications
+- Confirmation dialogs
+- Pagination
+- Advanced footer
+- Improved login page
+- Password visibility toggle
+- Role-aware UI rendering
+
+---
+
+# Custom Filters Used
+
+## SessionAuthorizeAttribute
+Checks login session.
+
+Flow:
+
+```txt
+No session → Redirect to Login
+```
+
+---
+
+## RoleAuthorizeAttribute
+Checks role permission.
+
+Flow:
+
+```txt
+Unauthorized role
+→ Redirect to previous page
+→ Show toast notification
+```
+
+---
+
+# MVC Project Structure
 
 ```bash
 EmployeeManagementSystem/
@@ -226,7 +415,18 @@ EmployeeManagementSystem/
 │   ├── User.cs
 │   ├── Role.cs
 │   ├── AuditLog.cs
-│   └── DashboardViewModel.cs
+│   └── ViewModels/
+│
+├── Data/
+│   └── EmployeeDbContext.cs
+│
+├── Filters/
+│   ├── SessionAuthorizeAttribute.cs
+│   └── RoleAuthorizeAttribute.cs
+│
+├── Helpers/
+│   ├── PasswordHelper.cs
+│   └── RememberMeHelper.cs
 │
 ├── Views/
 │   ├── Account/
@@ -235,14 +435,8 @@ EmployeeManagementSystem/
 │   ├── Department/
 │   ├── User/
 │   ├── Role/
-│   └── Audit/
-│
-├── Data/
-│   └── EmployeeDbContext.cs
-│
-├── Filters/
-│   ├── SessionAuthorizeAttribute.cs
-│   └── RoleAuthorizeAttribute.cs
+│   ├── Audit/
+│   └── Shared/
 │
 └── wwwroot/
     ├── css/
@@ -252,9 +446,9 @@ EmployeeManagementSystem/
 
 ---
 
-## Database Tables
+# Database Tables
 
-Main tables:
+Main Tables:
 
 - Employees
 - Departments
@@ -264,24 +458,34 @@ Main tables:
 
 ---
 
-## Installation Guide
+# Installation Guide
 
-### 1. Clone Repository
+## 1. Clone Repository
+
 ```bash
 git clone https://github.com/Cshekhar004/EmployeeManagementSystem.git
 ```
 
-### 2. Navigate to Project
+---
+
+## 2. Navigate to Project
+
 ```bash
 cd EmployeeManagementSystem
 ```
 
-### 3. Restore Packages
+---
+
+## 3. Restore Packages
+
 ```bash
 dotnet restore
 ```
 
-### 4. Configure Database
+---
+
+## 4. Configure Database
+
 Update connection string in:
 
 ```json
@@ -292,11 +496,22 @@ Example:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=.;Database=EmployeeManagementDB;Trusted_Connection=True;TrustServerCertificate=True;"
+  "DefaultConnection": "server=localhost;database=EmployeeManagementDB;user=root;password=YOUR_PASSWORD;"
 }
 ```
 
-### 5. Run Project
+---
+
+## 5. Run Migrations
+
+```bash
+dotnet ef database update
+```
+
+---
+
+## 6. Run Project
+
 ```bash
 dotnet build
 dotnet run
@@ -304,58 +519,71 @@ dotnet run
 
 ---
 
-## Future Enhancements
-Possible improvements:
+# Screenshots
 
-- Password hashing
-- Email notifications
-- Reports module
-- Dark mode
-- Cloud deployment
-- Profile management
-- Advanced analytics
+Add screenshots here.
 
----
-
-## Screenshots
-Add screenshots here after uploading them to GitHub.
-
-Example:
+Examples:
 
 - Login Page
-  <img width="1536" height="1024" alt="ChatGPT Image Jun 27, 2026, 03_20_44 PM" src="https://github.com/user-attachments/assets/52d9d8ec-05ce-4722-88f3-899fe1c84525" />
-
+  <img width="1918" height="927" alt="image" src="https://github.com/user-attachments/assets/e4fff1a5-2c7e-4931-90bb-72f08b08a34b" />
+  
 - Dashboard
-  <img width="1901" height="927" alt="Screenshot 2026-06-27 145455" src="https://github.com/user-attachments/assets/2a91d879-5775-4cf9-ada3-003579752216" />
+  <img width="1900" height="927" alt="image" src="https://github.com/user-attachments/assets/bd83860c-7efb-44c3-a58f-f5562c0cbf69" />
 
 - Employee List
-  <img width="1918" height="928" alt="Screenshot 2026-06-27 145518" src="https://github.com/user-attachments/assets/9419edd7-cc9e-4e60-ae1e-579dd1f279ba" />
+  <img width="1901" height="927" alt="image" src="https://github.com/user-attachments/assets/ec851aa8-2869-4988-8069-a84736520959" />
+
+- Department List
+  <img width="1901" height="927" alt="image" src="https://github.com/user-attachments/assets/e9ec30a4-357c-4fce-ab6a-26f8d0eb5351" />
 
 - User Management
-  <img width="1918" height="927" alt="Screenshot 2026-06-27 145645" src="https://github.com/user-attachments/assets/fcbc3a7b-ef51-4f33-9069-a5d7479bc976" />
+  <img width="1906" height="926" alt="image" src="https://github.com/user-attachments/assets/c6c55eba-2060-4ae8-b0ca-ef50e8e1dfac" />
 
 - Audit Trail
-  <img width="1918" height="927" alt="image" src="https://github.com/user-attachments/assets/bf5841eb-3921-4296-ab1e-5bce72e619dc" />
-
+  <img width="1896" height="927" alt="image" src="https://github.com/user-attachments/assets/70cf3875-3b28-48a1-bbf0-3d9a6bbfca68" />
 
 ---
 
-## Learning Outcomes
-Through this project I learned:
+# Learning Outcomes
+
+This project helped me learn:
 
 - ASP.NET Core MVC architecture
 - Entity Framework Core
-- SQL Server integration
-- Authentication & Authorization
-- Role-based security
-- CRUD operations
-- Dashboard analytics
-- Git & GitHub workflow
-- UI/UX design improvements
+- MySQL integration
+- Session Authentication
+- Role-Based Authorization
+- Password Hashing
+- Secure Token Handling
+- Audit Logging
+- Bootstrap Modal Workflow
+- AJAX CRUD Operations
+- Pagination & Filtering
+- Dashboard Analytics
+- Git & GitHub Workflow
+- Real-world Debugging
 
 ---
 
-## Author
+# Future Enhancements
+
+Possible upgrades:
+
+- JWT Authentication
+- Email Notifications
+- Attendance Module
+- Leave Management
+- Payroll Module
+- Cloud Deployment
+- Docker Support
+- CI/CD Pipeline
+- API Version
+- Mobile App
+
+---
+
+# Author
 
 **Chandrashekhar Sahu**  
 B.Tech Computer Engineering  
@@ -366,5 +594,6 @@ https://github.com/Cshekhar004
 
 ---
 
-## License
-This project is for educational and portfolio purposes.
+# License
+
+This project is developed for educational, portfolio, and learning purposes.
